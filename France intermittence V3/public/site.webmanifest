@@ -1,0 +1,17 @@
+{
+  "name": "France Intermittence",
+  "short_name": "France Intermittence",
+  "description": "Formations et accompagnement pour intermittents du spectacle.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#071b5f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

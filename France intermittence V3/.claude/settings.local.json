@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(cp \"C:\\\\Users\\\\De Sousa\\\\Downloads\\\\besoins d'accompagnement.svg\" \"C:\\\\Users\\\\De Sousa\\\\Desktop\\\\France intermittence V2\\\\src\\\\assets\\\\besoin-accompagnement.svg\")",
+      "Bash(powershell -command \"\\(Get-Content 'C:\\\\Users\\\\De Sousa\\\\Desktop\\\\France intermittence V2\\\\src\\\\assets\\\\besoin-accompagnement.svg' -TotalCount 1\\).Substring\\(0, 300\\)\")",
+      "Bash(npm install *)",
+      "Bash(ls -la \"C:\\\\Users\\\\De Sousa\\\\Desktop\\\\france intermittence\\\\élément néscésaire\\\\3- Design & identité\\\\1- Pages\\\\3- Financement\" 2>/dev/null || echo \"DOSSIER REFERENCE INTROUVABLE\" *)",
+      "Bash(netstat -ano)",
+      "Bash(powershell -Command \"\\(Get-Content src/App.css | Measure-Object -Line\\).Lines\")",
+      "Bash(ls -la \"C:\\\\Users\\\\desou\\\\Desktop\\\\stage France intermittence V2\" 2>/dev/null; echo \"---MEMORY---\"; ls -la \"C:\\\\Users\\\\desou\\\\.claude\\\\projects\\\\C--Users-desou-Desktop-stage-France-intermittence-V2\\\\memory\\\\\" 2>/dev/null)",
+      "Bash(ls -la '/c/Users/desou/Desktop/stage France intermittence V2'; echo \"---MEMORY---\"; ls -la '/c/Users/desou/.claude/projects/C--Users-desou-Desktop-stage-France-intermittence-V2/memory/')"
+    ]
+  }
+}

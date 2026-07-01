@@ -2729,6 +2729,17 @@ a.breadcrumb__link:hover {
   color: #d6342c;
 }
 
+.mfa-form__submit-error {
+  margin: 4px 0 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(214, 52, 44, 0.28);
+  border-radius: 10px;
+  background: rgba(214, 52, 44, 0.06);
+  color: #a8241e;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 /* Trust */
 .mfa-trust {
   margin-top: 28px;

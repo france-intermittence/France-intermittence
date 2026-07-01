@@ -87,6 +87,7 @@ export function MaFormationAdaptee() {
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   function clearError(name: keyof LeadData) {
     setErrors((previous) => {
@@ -142,6 +143,7 @@ export function MaFormationAdaptee() {
     }
 
     setErrors({})
+    setSubmitError('')
     setSubmitting(true)
 
     try {
@@ -151,6 +153,7 @@ export function MaFormationAdaptee() {
       trackConversion('lead_formation_adaptee', { domaine: form.domaine })
       navigate('/ma-formation-adaptee/confirmation')
     } catch {
+      setSubmitError('Une erreur est survenue pendant l’envoi. Réessayez dans quelques instants ou contactez-nous par téléphone.')
       setSubmitting(false)
     }
   }
@@ -381,6 +384,12 @@ export function MaFormationAdaptee() {
               )}
             </div>
           </div>
+
+          {submitError && (
+            <p className="mfa-form__submit-error" role="alert">
+              {submitError}
+            </p>
+          )}
 
           <button type="submit" className="mfa-form__submit" disabled={submitting} aria-busy={submitting}>
             {submitting ? 'Envoi…' : 'Lancer ma simulation'}

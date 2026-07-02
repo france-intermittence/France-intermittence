@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { sendLeadEmails } from './sendLeadEmails'
 
 export type LeadData = {
   nom: string
@@ -40,6 +41,8 @@ export async function submitLead(data: LeadData): Promise<SubmitLeadResult> {
   if (error) {
     throw new Error('La demande n’a pas pu être enregistrée.', { cause: error })
   }
+
+  await sendLeadEmails(data, reference)
 
   return { success: true, reference }
 }

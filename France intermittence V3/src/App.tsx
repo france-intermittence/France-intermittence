@@ -17,6 +17,7 @@ import { Confirmation } from './pages/Confirmation'
 import { Financement } from './pages/Financement'
 import { Accompagnement } from './pages/Accompagnement'
 import { Blog } from './pages/Blog'
+import { BlogArticle } from './pages/BlogArticle'
 import { About } from './pages/About'
 import { LegalPage } from './pages/LegalPage'
 import { legalPages } from './data/siteConfig'
@@ -114,6 +115,7 @@ function App() {
         <Route path="/financement" element={<Financement />} />
         <Route path="/accompagnement" element={<Accompagnement />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/a-propos" element={<About />} />
         <Route
           path="/mentions-legales"

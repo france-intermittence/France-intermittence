@@ -1,10 +1,31 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import blogFeatured from '../../3- Recherches & Photos choisis/Page blog 1.png'
 import blogCumul from '../../3- Recherches & Photos choisis/Page blog 2.png'
-import blogThalie from '../../3- Recherches & Photos choisis/Page blog 3.png'
-import blogAfdas from '../../3- Recherches & Photos choisis/Page blog 4.png'
 import { siteConfig } from '../data/siteConfig'
 import { Reveal } from '../components/Reveal'
+import { getPublishedBlogArticles, type BlogArticle } from '../services/blogArticles'
+
+const articleImages: Record<string, string> = {
+  '507-heures-intermittence-securiser-parcours': blogFeatured,
+  'intermittent-spectacle-etapes-entrer-regime': blogCumul,
+}
+
+function formatDate(value: string): string {
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(value))
+}
+
+function normalizeSearch(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLocaleLowerCase('fr-FR')
+    .trim()
+}
 
 function CalendarIcon() {
   return (
@@ -42,31 +63,48 @@ function HandsHeartIcon() {
   )
 }
 
-const articles = [
-  {
-    tag: 'Droits & réglementation',
-    title: "Cumul intermittent et activité complémentaire : les points à vérifier avant d’avancer",
-    date: '09 février 2026',
-    image: blogCumul,
-    to: '/accompagnement',
-  },
-  {
-    tag: 'Protection sociale',
-    title: 'Mieux se faire accompagner quand son parcours devient plus complexe',
-    date: '05 février 2026',
-    image: blogThalie,
-    to: '/accompagnement',
-  },
-  {
-    tag: 'Formation',
-    title: 'Financement AFDAS : les réflexes à avoir avant de choisir sa formation',
-    date: '02 février 2026',
-    image: blogAfdas,
-    to: '/financement',
-  },
-]
-
 export function Blog() {
+  const [articles, setArticles] = useState<BlogArticle[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    let active = true
+
+    getPublishedBlogArticles()
+      .then((result) => {
+        if (active) setArticles(result)
+      })
+      .catch(() => {
+        if (active) setError('Les articles ne peuvent pas être chargés pour le moment.')
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const normalizedQuery = normalizeSearch(query)
+  const filteredArticles = normalizedQuery
+    ? articles.filter((article) => {
+        const searchableContent = [
+          article.title,
+          article.excerpt,
+          article.category,
+          article.primary_keyword,
+          ...article.secondary_keywords,
+        ].join(' ')
+
+        return normalizeSearch(searchableContent).includes(normalizedQuery)
+      })
+    : articles
+  const featured = filteredArticles.find((article) => article.is_featured) ?? filteredArticles[0]
+  const sideArticles = filteredArticles.filter((article) => article.id !== featured?.id)
+
   return (
     <div className="blog-page">
       <Reveal>
@@ -79,59 +117,107 @@ export function Blog() {
           </h1>
           <span className="blog-title__underline" />
           <p className="blog-intro">
-            Des contenus pour comprendre vos droits, préparer votre financement
-            et avancer dans votre projet de formation avec plus de clarté.
+            Des contenus fondés sur des sources institutionnelles pour comprendre vos droits,
+            préparer vos démarches et avancer dans votre projet de formation avec plus de clarté.
           </p>
         </header>
       </Reveal>
 
-      <Reveal>
-      <div className="blog-grid">
-        <article className="blog-featured">
-          <div className="blog-featured__media">
-            <img src={blogFeatured} alt="Conférence et ressources autour de la formation des intermittents" loading="lazy" decoding="async" />
-          </div>
-          <div className="blog-featured__body">
-            <span className="blog-tag">Démarches</span>
-            <h2 className="blog-featured__title">
-              Construire son projet de formation quand on est intermittent: par où commencer ?
-            </h2>
-            <p className="blog-featured__desc">
-              Objectif métier, calendrier, droits, financement et choix du bon interlocuteur:
-              les bases à poser avant d’engager votre dossier.
-            </p>
-            <div className="blog-featured__footer">
-              <span className="blog-date">
-                <CalendarIcon /> 12 février 2026
+      {!loading && !error && (
+        <Reveal>
+          <section className="blog-search" aria-label="Recherche dans les articles">
+            <div className="blog-search__heading">
+              <label htmlFor="blog-search-input">Rechercher un article</label>
+              <span className="blog-search__count" aria-live="polite">
+                {filteredArticles.length} {filteredArticles.length > 1 ? 'articles trouvés' : 'article trouvé'}
               </span>
-              <Link to="/ma-formation-adaptee" className="blog-read-btn">
-                Lancer mon projet <ArrowIcon />
-              </Link>
+            </div>
+            <div className="blog-search__control">
+              <input
+                id="blog-search-input"
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Ex. : 507 heures, France Travail, Afdas…"
+              />
+              {query && (
+                <button type="button" onClick={() => setQuery('')}>
+                  Effacer
+                </button>
+              )}
+            </div>
+          </section>
+        </Reveal>
+      )}
+
+      {loading && <p className="blog-loading">Chargement des articles…</p>}
+      {error && <p className="blog-loading blog-loading--error">{error}</p>}
+
+      {!loading && !error && featured && (
+        <Reveal>
+          <div className="blog-grid">
+            <article className="blog-featured">
+              <div className="blog-featured__media">
+                <img
+                  src={featured.featured_image_url ?? articleImages[featured.slug] ?? blogFeatured}
+                  alt={featured.featured_image_alt ?? featured.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className="blog-featured__body">
+                <span className="blog-tag">{featured.category}</span>
+                <h2 className="blog-featured__title">{featured.title}</h2>
+                <p className="blog-featured__desc">{featured.excerpt}</p>
+                <div className="blog-featured__footer">
+                  <span className="blog-date">
+                    <CalendarIcon /> {formatDate(featured.published_at)}
+                  </span>
+                  <Link to={`/blog/${featured.slug}`} className="blog-read-btn">
+                    Lire l’article <ArrowIcon />
+                  </Link>
+                </div>
+              </div>
+            </article>
+
+            <div className="blog-side">
+              {sideArticles.map((article) => (
+                <article className="blog-card" key={article.id}>
+                  <div className="blog-card__media">
+                    <img
+                      src={article.featured_image_url ?? articleImages[article.slug] ?? blogCumul}
+                      alt={article.featured_image_alt ?? article.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="blog-card__body">
+                    <span className="blog-tag">{article.category}</span>
+                    <h3 className="blog-card__title">{article.title}</h3>
+                    <span className="blog-date">
+                      <CalendarIcon /> {formatDate(article.published_at)}
+                    </span>
+                  </div>
+                  <Link to={`/blog/${article.slug}`} className="blog-card__arrow" aria-label={`Lire ${article.title}`}>
+                    <ArrowIcon />
+                  </Link>
+                </article>
+              ))}
             </div>
           </div>
-        </article>
+        </Reveal>
+      )}
 
-        <div className="blog-side">
-          {articles.map((article) => (
-            <article className="blog-card" key={article.title}>
-              <div className="blog-card__media">
-                <img src={article.image} alt={article.title} loading="lazy" decoding="async" />
-              </div>
-              <div className="blog-card__body">
-                <span className="blog-tag">{article.tag}</span>
-                <h3 className="blog-card__title">{article.title}</h3>
-                <span className="blog-date">
-                  <CalendarIcon /> {article.date}
-                </span>
-              </div>
-              <Link to={article.to} className="blog-card__arrow" aria-label={`Lire ${article.title}`}>
-                <ArrowIcon />
-              </Link>
-            </article>
-          ))}
+      {!loading && !error && !featured && (
+        <div className="blog-empty" role="status">
+          <p className="blog-empty__eyebrow">Aucun résultat</p>
+          <h2>Aucun article ne correspond à votre recherche.</h2>
+          <p>Essayez un terme plus général ou affichez de nouveau tous les articles.</p>
+          <button type="button" onClick={() => setQuery('')}>
+            Voir tous les articles
+          </button>
         </div>
-      </div>
-      </Reveal>
+      )}
 
       <Reveal>
         <section className="blog-cta">
@@ -143,8 +229,8 @@ export function Blog() {
               <div>
                 <h2 className="blog-cta__title">Prêt à passer de la lecture à l’action ?</h2>
                 <p className="blog-cta__sub">
-                  Selon votre situation et vos droits, votre formation peut vous coûter 0 €.
-                  Nous le vérifions avec vous, sans démarche administrative à votre charge.
+                  Chaque situation mérite d’être étudiée individuellement. Nous vous aidons à
+                  clarifier votre projet, vos démarches et les financements envisageables.
                 </p>
               </div>
             </div>

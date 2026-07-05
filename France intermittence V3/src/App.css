@@ -10,6 +10,9 @@
 }
 
 .page-main {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
   padding: 0 0 24px;
 }
 
@@ -793,7 +796,7 @@
 
 .home-seo {
   display: grid;
-  gap: 24px;
+  gap: 56px;
   padding-top: 48px;
 }
 
@@ -5935,8 +5938,12 @@ button.admin-modal__close:hover {
     font-size: 13px;
   }
 
+  .page-main {
+    gap: 40px;
+  }
+
   .home-seo {
-    gap: 22px;
+    gap: 36px;
     padding-top: 32px;
   }
 

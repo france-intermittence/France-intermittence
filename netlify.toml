@@ -2,6 +2,11 @@
   base = "France intermittence V3"
   command = "npm run build"
   publish = "dist"
+  # Netlify saute automatiquement le build s'il ne détecte aucun changement
+  # dans le dossier "base" par rapport au commit précédent (utile pour un
+  # monorepo, mais ce diff s'est trompé lors de pushs rapprochés). On force
+  # ici un build systématique à chaque push (exit 1 = "ne pas ignorer").
+  ignore = "exit 1"
 
 [build.environment]
   NODE_VERSION = "22"

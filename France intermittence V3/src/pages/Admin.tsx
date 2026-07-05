@@ -10,11 +10,21 @@ import {
   splitLines,
   storeAdminCode,
   type AdminArticle,
+  type AdminEvent,
   type AdminLead,
   type AdminStats,
 } from '../services/adminApi'
 import { BarRankingList, LeadsTrendChart, StatTile, StatusStackBar } from '../components/AdminCharts'
-import { articleInsights, bucketLeadsByDay, leadsPeriodDelta, topDomaines } from '../services/adminInsights'
+import {
+  articleInsights,
+  bucketEventsByDay,
+  bucketLeadsByDay,
+  clickThroughRate,
+  leadsPeriodDelta,
+  topDomaines,
+  topEventNames,
+  topPagesByClicks,
+} from '../services/adminInsights'
 import { MailIcon, PhoneIcon } from '../components/Icons'
 import {
   ArticleIcon,
@@ -33,6 +43,8 @@ import {
   StarIcon,
   TagIcon,
   TrashIcon,
+  TrendUpIcon,
+  UsersIcon,
 } from '../components/AdminIcons'
 
 type AdminTab = 'dashboard' | 'stats' | 'leads' | 'articles'
@@ -108,6 +120,7 @@ export function Admin() {
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [leads, setLeads] = useState<AdminLead[]>([])
   const [articles, setArticles] = useState<AdminArticle[]>([])
+  const [events, setEvents] = useState<AdminEvent[]>([])
   const [editing, setEditing] = useState(articleToForm(emptyArticle))
   const [editingSnapshot, setEditingSnapshot] = useState('')
   const [isEditorOpen, setIsEditorOpen] = useState(false)
@@ -119,6 +132,14 @@ export function Admin() {
   const domaineTop = useMemo(() => topDomaines(leads, 6), [leads])
   const leadsDelta = useMemo(() => leadsPeriodDelta(leads), [leads])
   const insights = useMemo(() => articleInsights(articles), [articles])
+  const conversionEvents = useMemo(
+    () => events.filter((event) => event.event_name === 'call_click' || event.event_name === 'callback_click'),
+    [events],
+  )
+  const dailyConversionClicks = useMemo(() => bucketEventsByDay(conversionEvents, 14), [conversionEvents])
+  const topClickPages = useMemo(() => topPagesByClicks(events, 6), [events])
+  const topClicks = useMemo(() => topEventNames(events.filter((event) => event.event_type === 'click'), 6), [events])
+  const conversion = useMemo(() => clickThroughRate(events), [events])
   const filteredArticles = useMemo(
     () => (statusFilter === 'all' ? articles : articles.filter((article) => article.status === statusFilter)),
     [articles, statusFilter],
@@ -132,6 +153,7 @@ export function Admin() {
       setStats(data.stats ?? null)
       setLeads(data.leads ?? [])
       setArticles(data.articles ?? [])
+      setEvents(data.events ?? [])
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Chargement impossible.')
     } finally {
@@ -416,6 +438,43 @@ export function Admin() {
                     {insights.totalWords.toLocaleString('fr-FR')} mots publiés au total
                   </li>
                 </ul>
+              </section>
+            </div>
+
+            <div className="admin-stats">
+              <StatTile icon={<PhoneIcon />} label="Clics sur Appeler" value={stats?.call_clicks_total ?? 0} />
+              <StatTile icon={<UsersIcon />} label="Clics sur Être rappelé" value={stats?.callback_clicks_total ?? 0} />
+              <StatTile icon={<ChartIcon />} label="Pages vues (7 jours)" value={stats?.page_views_7_days ?? 0} />
+              <StatTile icon={<TrendUpIcon />} label="Taux de conversion" value={`${conversion.ratePct}%`} />
+            </div>
+
+            <section className="admin-card admin-chart-card">
+              <div className="admin-card__head">
+                <h3>Clics de conversion (Appeler + Être rappelé)</h3>
+                <span className="admin-card__hint">14 derniers jours</span>
+              </div>
+              <LeadsTrendChart
+                data={dailyConversionClicks}
+                unitLabel="clic"
+                ariaLabel="Évolution des clics de conversion sur les 14 derniers jours"
+              />
+            </section>
+
+            <div className="admin-detail-grid">
+              <section className="admin-card">
+                <h3>Pages où les visiteurs cliquent le plus</h3>
+                <BarRankingList
+                  items={topClickPages.map((item) => ({ label: item.page, count: item.count }))}
+                  emptyLabel="Aucun clic enregistré pour le moment."
+                />
+              </section>
+
+              <section className="admin-card">
+                <h3>Répartition des clics</h3>
+                <BarRankingList
+                  items={topClicks.map((item) => ({ label: item.label, count: item.count }))}
+                  emptyLabel="Aucun clic enregistré pour le moment."
+                />
               </section>
             </div>
           </>

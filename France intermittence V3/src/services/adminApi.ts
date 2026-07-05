@@ -43,12 +43,27 @@ export type AdminArticle = {
   updated_at?: string
 }
 
+export type AdminEvent = {
+  id: string
+  event_type: 'page_view' | 'click'
+  event_name: string
+  page: string
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
 export type AdminStats = {
   leads_total: number
   leads_7_days: number
   articles_total: number
   articles_published: number
   articles_draft: number
+  page_views_total: number
+  page_views_7_days: number
+  call_clicks_total: number
+  call_clicks_7_days: number
+  callback_clicks_total: number
+  callback_clicks_7_days: number
 }
 
 type AdminResponse = {
@@ -56,6 +71,7 @@ type AdminResponse = {
   leads?: AdminLead[]
   articles?: AdminArticle[]
   article?: AdminArticle
+  events?: AdminEvent[]
   publicUrl?: string
   path?: string
   ok?: boolean

@@ -14,7 +14,15 @@ function formatDayLabel(date: Date, long = false) {
   return new Intl.DateTimeFormat('fr-FR', long ? { weekday: 'long', day: 'numeric', month: 'long' } : { day: '2-digit', month: 'short' }).format(date)
 }
 
-export function LeadsTrendChart({ data }: { data: DayBucket[] }) {
+export function LeadsTrendChart({
+  data,
+  unitLabel = 'lead',
+  ariaLabel,
+}: {
+  data: DayBucket[]
+  unitLabel?: string
+  ariaLabel?: string
+}) {
   const width = 600
   const height = 220
   const paddingLeft = 30
@@ -71,7 +79,7 @@ export function LeadsTrendChart({ data }: { data: DayBucket[] }) {
         viewBox={`0 0 ${width} ${height}`}
         className="admin-chart__svg"
         role="img"
-        aria-label="Évolution du nombre de leads sur les 14 derniers jours"
+        aria-label={ariaLabel ?? `Évolution du nombre de ${unitLabel}s sur les 14 derniers jours`}
         onPointerMove={handlePointerMove}
         onPointerLeave={() => setHoverIndex(null)}
       >
@@ -109,18 +117,18 @@ export function LeadsTrendChart({ data }: { data: DayBucket[] }) {
       {hovered && (
         <div className="admin-chart__tooltip" style={{ left: `${(hovered.x / width) * 100}%`, top: `${(hovered.y / height) * 100}%` }}>
           <strong>
-            {hovered.count} lead{hovered.count > 1 ? 's' : ''}
+            {hovered.count} {unitLabel}{hovered.count > 1 ? 's' : ''}
           </strong>
           <span>{formatDayLabel(hovered.date, true)}</span>
         </div>
       )}
 
       <table className="sr-only">
-        <caption>Nombre de leads par jour, 14 derniers jours</caption>
+        <caption>Nombre de {unitLabel}s par jour, 14 derniers jours</caption>
         <thead>
           <tr>
             <th>Date</th>
-            <th>Leads</th>
+            <th>{unitLabel === 'lead' ? 'Leads' : `${unitLabel.charAt(0).toUpperCase()}${unitLabel.slice(1)}s`}</th>
           </tr>
         </thead>
         <tbody>

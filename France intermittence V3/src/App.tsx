@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { FundingSection } from './components/FundingSection'
 import { Header } from './components/Header'
 import { MobileCallBar } from './components/MobileCallBar'
+import { CookieConsent } from './components/CookieConsent'
 import { HeroSection } from './components/HeroSection'
 import { AudiencePaths } from './components/AudiencePaths'
 import { UniverseCards } from './components/UniverseCards'
@@ -17,6 +18,8 @@ import { siteImages } from './data/siteImages'
 import { legalPages } from './data/siteConfig'
 import { routeSeo } from './data/seo'
 import { metierProfiles } from './data/metiers'
+import { trackEvent } from './lib/track'
+import { useClickTracking } from './hooks/useClickTracking'
 
 const parisFrieze = siteImages.friseParisDecorative
 
@@ -93,6 +96,10 @@ function RouteEffects() {
     window.scrollTo({ top: 0, behavior: 'auto' })
   }, [hash, pathname])
 
+  useEffect(() => {
+    trackEvent('page_view', 'page_view')
+  }, [pathname])
+
   if (!meta) return null
 
   return <Seo pathname={pathname} meta={meta} breadcrumbs={items} />
@@ -127,6 +134,8 @@ function HomePage() {
 }
 
 function App() {
+  useClickTracking()
+
   return (
     <div className="page-shell">
       <a href="#main-content" className="skip-link">Aller au contenu principal</a>
@@ -168,6 +177,7 @@ function App() {
       </Suspense>
       <Footer />
       <MobileCallBar />
+      <CookieConsent />
     </div>
   )
 }

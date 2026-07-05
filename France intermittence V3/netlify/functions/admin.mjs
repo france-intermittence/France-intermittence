@@ -104,6 +104,16 @@ async function listLeads() {
   return supabaseFetch('/rest/v1/leads?select=*&order=created_at.desc&limit=200')
 }
 
+async function listEvents() {
+  try {
+    return await supabaseFetch('/rest/v1/site_events?select=*&order=created_at.desc&limit=5000')
+  } catch {
+    // La table site_events peut ne pas encore exister (migration non appliquée) :
+    // on dégrade en liste vide plutôt que de faire échouer tout le dashboard.
+    return []
+  }
+}
+
 async function listArticles() {
   return supabaseFetch('/rest/v1/blog_articles?select=*&order=updated_at.desc&limit=200')
 }
@@ -173,9 +183,10 @@ async function uploadImage(payload) {
   }
 }
 
-function getStats(leads, articles) {
+function getStats(leads, articles, events) {
   const now = Date.now()
   const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000
+  const recentEvents = events.filter((event) => new Date(event.created_at).getTime() >= sevenDaysAgo)
 
   return {
     leads_total: leads.length,
@@ -183,6 +194,12 @@ function getStats(leads, articles) {
     articles_total: articles.length,
     articles_published: articles.filter((article) => article.status === 'published').length,
     articles_draft: articles.filter((article) => article.status === 'draft').length,
+    page_views_total: events.filter((event) => event.event_type === 'page_view').length,
+    page_views_7_days: recentEvents.filter((event) => event.event_type === 'page_view').length,
+    call_clicks_total: events.filter((event) => event.event_name === 'call_click').length,
+    call_clicks_7_days: recentEvents.filter((event) => event.event_name === 'call_click').length,
+    callback_clicks_total: events.filter((event) => event.event_name === 'callback_click').length,
+    callback_clicks_7_days: recentEvents.filter((event) => event.event_name === 'callback_click').length,
   }
 }
 
@@ -203,8 +220,8 @@ export async function handler(event) {
     }
 
     if (body.action === 'dashboard') {
-      const [leads, articles] = await Promise.all([listLeads(), listArticles()])
-      return json(200, { stats: getStats(leads, articles), leads, articles })
+      const [leads, articles, events] = await Promise.all([listLeads(), listArticles(), listEvents()])
+      return json(200, { stats: getStats(leads, articles, events), leads, articles, events })
     }
 
     if (body.action === 'leads') {
@@ -213,6 +230,10 @@ export async function handler(event) {
 
     if (body.action === 'articles') {
       return json(200, { articles: await listArticles() })
+    }
+
+    if (body.action === 'events') {
+      return json(200, { events: await listEvents() })
     }
 
     if (body.action === 'saveArticle') {

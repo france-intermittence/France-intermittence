@@ -1,7 +1,6 @@
 // Images statiques du site (photos, logos partenaires, icônes), hébergées
 // dans le bucket public Supabase Storage `site-images`, avec des noms de
-// fichiers SEO-friendly. Voir scripts/upload-site-images.mjs pour la
-// procédure de migration depuis les anciens imports Vite locaux.
+// fichiers SEO-friendly.
 const BASE = 'https://mcykcupkczgsufxklmbr.supabase.co/storage/v1/object/public/site-images'
 
 export const siteImages = {
@@ -10,6 +9,7 @@ export const siteImages = {
   aboutPortraitAvif: `${BASE}/conseillere-france-intermittence-portrait.avif`,
   aboutPortraitPng: `${BASE}/conseillere-france-intermittence-portrait.png`,
   accompagnementPhotoAvif: `${BASE}/accompagnement-conseillere-formation-intermittent.avif`,
+  financementHeroWebp: `${BASE}/financement-formation-signature-dossier-conseiller.webp`,
   blogFeaturedAvif: `${BASE}/article-507-heures-intermittence-spectacle.avif`,
   blogFeaturedPng: `${BASE}/article-507-heures-intermittence-spectacle.png`,
   blogCumulAvif: `${BASE}/article-cumul-emploi-intermittent-spectacle.avif`,

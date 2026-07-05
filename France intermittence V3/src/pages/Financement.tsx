@@ -4,7 +4,7 @@ import { siteConfig } from '../data/siteConfig'
 import { financingFaq } from '../data/seo'
 import { Reveal } from '../components/Reveal'
 
-const heroPhoto = siteImages.heroCoupleAvif
+const heroPhoto = siteImages.financementHeroWebp
 const qualiopiLogo = siteImages.logoQualiopi
 const afdasLogo = siteImages.logoAfdas
 const franceTravailLogo = siteImages.logoFranceTravail

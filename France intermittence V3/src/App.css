@@ -104,6 +104,34 @@
   color: var(--orange);
 }
 
+.site-header__nav a,
+.site-header__nav button {
+  position: relative;
+  transition: color 150ms ease, transform 150ms ease;
+}
+
+.site-header__nav a:hover,
+.site-header__nav button:hover {
+  transform: translateY(-1px);
+}
+
+.site-header__nav a:not(.site-header__nav-active)::after,
+.site-header__nav button:not(.site-header__nav-active)::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--orange);
+  transition: width 220ms ease;
+}
+
+.site-header__nav a:not(.site-header__nav-active):hover::after,
+.site-header__nav button:not(.site-header__nav-active):hover::after {
+  width: 100%;
+}
+
 .site-header__dropdown {
   position: relative;
   display: inline-flex;

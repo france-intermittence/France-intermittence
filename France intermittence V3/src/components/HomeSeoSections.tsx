@@ -315,7 +315,7 @@ export function HomeSeoSections() {
 
       <div className="home-seo__trust-layout">
         <section className="home-seo__panel" aria-labelledby="home-trust-title">
-          <p className="home-seo__kicker">Engagements</p>
+          <p className="home-seo__kicker">Notre différence</p>
           <h3 id="home-trust-title">Des preuves de confiance concrètes</h3>
           <div className="home-seo__trust-list">
             {trustItems.map((item) => (
@@ -333,7 +333,7 @@ export function HomeSeoSections() {
         </section>
 
         <nav className="home-seo__panel home-seo__panel--links" aria-labelledby="home-links-title">
-          <p className="home-seo__kicker">Maillage interne</p>
+          <p className="home-seo__kicker">À explorer</p>
           <h3 id="home-links-title">Continuer votre parcours</h3>
           <div className="home-seo__links">
             {internalLinks.map((item) => (

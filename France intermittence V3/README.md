@@ -11,6 +11,21 @@ npm run dev
 
 Le site est ensuite disponible sur `http://127.0.0.1:5173/` lorsque Vite est lancé avec `--host 127.0.0.1`.
 
+⚠️ `npm run dev` ne sert que le site : la page `/admin` ne peut pas se
+connecter (404 sur `.netlify/functions/admin`), car Vite seul ne sait pas
+exécuter les fonctions serverless Netlify. Pour tester `/admin` en local, il
+faut passer par le CLI Netlify, qui simule ces fonctions :
+
+```bash
+npm install -g netlify-cli   # une seule fois
+netlify dev
+```
+
+Ouvrir ensuite l'URL affichée par `netlify dev` (pas celle de Vite) : elle
+sert à la fois le site et les fonctions, et lit automatiquement les
+variables de `.env.local` (dont `SUPABASE_SERVICE_ROLE_KEY` et
+`ADMIN_CODE`).
+
 ## Configuration Supabase
 
 Copier `.env.example` vers `.env.local`, puis renseigner :

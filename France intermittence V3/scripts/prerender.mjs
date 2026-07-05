@@ -81,7 +81,9 @@ async function main() {
   let browser
   try {
     await waitForServer(ORIGIN)
-    browser = await chromium.launch()
+    // --no-sandbox : requis dans la plupart des environnements CI (dont Netlify),
+    // qui exécutent le build en root sans sandbox utilisateur namespacé.
+    browser = await chromium.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
     const page = await browser.newPage()
 
     let failures = 0

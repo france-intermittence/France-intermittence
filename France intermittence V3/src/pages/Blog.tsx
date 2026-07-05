@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import blogFeatured from '../../3- Recherches & Photos choisis/Page blog 1.png'
-import blogCumul from '../../3- Recherches & Photos choisis/Page blog 2.png'
+import { siteImages } from '../data/siteImages'
 import { siteConfig } from '../data/siteConfig'
+
+const blogFeatured = siteImages.blogFeaturedAvif
+const blogCumul = siteImages.blogCumulAvif
+import { blogFaq } from '../data/seo'
 import { Reveal } from '../components/Reveal'
+import { PageFaq } from '../components/PageFaq'
 import { getPublishedBlogArticles, type BlogArticle } from '../services/blogArticles'
 
 const articleImages: Record<string, string> = {
@@ -218,6 +222,10 @@ export function Blog() {
           </button>
         </div>
       )}
+
+      <Reveal>
+        <PageFaq title="Questions fréquentes sur nos ressources" items={blogFaq} />
+      </Reveal>
 
       <Reveal>
         <section className="blog-cta">

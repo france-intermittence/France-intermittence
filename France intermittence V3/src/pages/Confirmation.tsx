@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-import iconObjectif from '../../icone/Formations-32.svg'
-import iconGroupe from '../../icone/groupe-32.svg'
-import iconTimer from '../../icone/Timer-32.svg'
+import { siteImages } from '../data/siteImages'
 import { TrustBanner } from '../components/TrustBanner'
+
+const iconObjectif = siteImages.iconFormations
+const iconGroupe = siteImages.iconGroupe
+const iconTimer = siteImages.iconTimer
 
 const badges = [
   { icon: iconObjectif, label: 'Objectif', sub: 'formation adaptée' },

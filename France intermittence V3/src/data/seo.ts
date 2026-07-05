@@ -1,9 +1,26 @@
-import type { Crumb } from '../components/Breadcrumb'
-import heroVisual from '../../3- Recherches & Photos choisis/photo_hero_financement_couple.png'
-import aboutVisual from '../../3- Recherches & Photos choisis/a propos.png'
-import financementVisual from '../../3- Recherches & Photos choisis/photo_hero_financement_couple.png'
-import blogVisual from '../../3- Recherches & Photos choisis/Page blog 1.png'
+// Ces visuels alimentent uniquement og:image/twitter:image (Seo.tsx). On
+// garde volontairement le PNG ici : Facebook/X/LinkedIn ne supportent pas
+// tous l'AVIF pour les aperçus de partage, contrairement aux <img> du site
+// (navigateurs modernes) qui utilisent la version AVIF plus légère ci-dessous.
+import { siteImages } from './siteImages'
 import { siteConfig } from './siteConfig'
+
+const heroVisual = siteImages.heroCouplePng
+const aboutVisual = siteImages.aboutPortraitPng
+const financementVisual = siteImages.heroCouplePng
+const blogVisual = siteImages.blogFeaturedPng
+import { getMetierFaq, metierProfiles } from './metiers'
+
+export type Crumb = { label: string; to?: string }
+
+export type ArticleMeta = {
+  authorName: string
+  publishedAt: string
+  modifiedAt?: string
+  wordCount?: number
+  category?: string
+  keywords?: string[]
+}
 
 export type SeoMeta = {
   title: string
@@ -14,51 +31,122 @@ export type SeoMeta = {
   keywords?: string
   serviceName?: string
   faq?: Array<{ question: string; answer: string }>
+  /** Présent uniquement sur un article de blog → émet un schema BlogPosting. */
+  article?: ArticleMeta
+  /** Présent sur une page de listing (métiers, blog) → émet un schema ItemList. */
+  itemList?: Array<{ name: string; url: string }>
 }
 
-const financingFaq = [
+// Ces tableaux sont la SOURCE UNIQUE de vérité pour chaque FAQ : les pages
+// (Financement.tsx, Accompagnement.tsx, MaFormationAdaptee.tsx, About.tsx,
+// Blog.tsx) les importent pour l'affichage, et `buildStructuredData` les
+// utilise pour le JSON-LD FAQPage. Le contenu affiché et le schema ne peuvent
+// donc plus diverger.
+
+export const financingFaq = [
   {
     question: 'Les formations peuvent-elles être financées par l’AFDAS ?',
     answer:
-      'Oui, selon vos droits et votre situation. France Intermittence vous aide à vérifier votre éligibilité et à constituer votre dossier.',
+      'Oui, selon vos droits et votre situation. France Intermittence vous aide à comprendre l’éligibilité possible et à préparer le bon dossier.',
   },
   {
     question: 'Dois-je avancer les frais de formation ?',
     answer:
-      'Dans de nombreux cas, non. Le financement peut être versé directement à l’organisme selon la prise en charge obtenue.',
+      'Selon le cadre de prise en charge obtenu, le paiement peut être versé directement à l’organisme. Nous vous expliquons le scénario applicable à votre situation.',
   },
   {
-    question: 'France Intermittence accompagne-t-il les démarches administratives ?',
+    question: 'Intervenez-vous seulement à Paris ?',
     answer:
-      'Oui. L’équipe accompagne les intermittents du spectacle dans la compréhension des droits, le montage du dossier et le suivi.',
+      'L’accompagnement est pensé depuis Paris et l’Île-de-France, mais des demandes peuvent aussi être suivies à distance selon les besoins.',
   },
-] as const
+]
 
-const supportFaq = [
+export const supportFaq = [
   {
-    question: 'Qui peut se faire accompagner ?',
+    question: 'Comment se déroule l’accompagnement France Intermittence ?',
     answer:
-      'L’accompagnement est pensé pour les intermittents du spectacle qui souhaitent clarifier leur projet, leurs droits ou leur parcours de formation.',
+      'L’accompagnement commence par un échange sur votre situation, votre métier, vos heures, vos contraintes et votre objectif. Nous clarifions ensuite les formations pertinentes, les droits mobilisables et les démarches à préparer.',
   },
   {
-    question: 'L’accompagnement est-il réservé à Paris ?',
+    question: 'Est-ce que je dois gérer seul le dossier administratif ?',
     answer:
-      'Non. France Intermittence intervient en Île-de-France et accompagne aussi des demandes partout en France selon les besoins.',
+      'Non. L’objectif de l’accompagnement est justement de vous aider à comprendre les pièces attendues, les délais et le chemin administratif le plus cohérent pour votre demande.',
   },
-] as const
+  {
+    question: 'L’accompagnement concerne-t-il seulement les intermittents confirmés ?',
+    answer:
+      'Non. Il peut aussi concerner les personnes qui souhaitent devenir intermittentes ou structurer un projet de formation en lien avec les métiers du spectacle et de l’audiovisuel.',
+  },
+  {
+    question: 'Peut-on être accompagné à distance ?',
+    answer:
+      'Oui. France Intermittence accompagne à Paris, en Île-de-France et à distance selon votre situation, votre disponibilité et le type de démarche à préparer.',
+  },
+]
 
-const formFaq = [
+export const formFaq = [
   {
-    question: 'Pourquoi remplir Ma Formation Adaptée ?',
+    question: 'Pourquoi remplir le formulaire Ma formation adaptée ?',
     answer:
-      'Le formulaire permet à l’équipe d’orienter rapidement l’intermittent vers la formation la plus adaptée à son objectif et à son volume d’heures.',
+      'Le formulaire permet de comprendre votre situation, votre domaine d’activité, vos heures restantes et votre objectif. Ces informations servent à vous orienter vers une formation cohérente et un cadre de financement possible.',
+  },
+  {
+    question: 'Est-ce que l’envoi du formulaire m’engage ?',
+    answer:
+      'Non. L’envoi permet uniquement à France Intermittence d’étudier votre demande et de vous recontacter. Vous gardez la main sur la suite du parcours.',
+  },
+  {
+    question: 'Pourquoi demander les heures réalisées et restantes ?',
+    answer:
+      'Ces informations aident à situer votre parcours d’intermittent, à comprendre votre échéance et à vérifier si une formation peut s’intégrer utilement dans votre calendrier.',
   },
   {
     question: 'Combien de temps faut-il pour être recontacté ?',
     answer:
-      'France Intermittence annonce un retour rapide afin de qualifier votre besoin et de vous proposer la bonne orientation.',
+      'L’objectif est de revenir rapidement vers vous après étude des informations transmises, afin de clarifier les prochaines étapes et les formations pertinentes.',
   },
-] as const
+]
+
+export const aboutFaq = [
+  {
+    question: 'France Intermittence est-il spécialisé dans les intermittents du spectacle ?',
+    answer:
+      'Oui. L’accompagnement est pensé pour les artistes, techniciens et professionnels de l’audiovisuel qui doivent composer avec les contraintes de l’intermittence, des droits formation et des calendriers de mission.',
+  },
+  {
+    question: 'À quoi sert la certification Qualiopi ?',
+    answer:
+      'Qualiopi est un repère qualité pour les actions de formation. Elle donne un cadre plus lisible aux démarches et peut être importante dans l’étude des prises en charge.',
+  },
+  {
+    question: 'France Intermittence intervient-il seulement en Île-de-France ?',
+    answer:
+      'L’ancrage est parisien et francilien, mais l’accompagnement peut aussi se faire à distance selon votre situation et votre projet.',
+  },
+  {
+    question: 'Pourquoi passer par un accompagnement plutôt que chercher seul ?',
+    answer:
+      'Parce que le choix d’une formation, le financement et les justificatifs peuvent vite devenir complexes. L’accompagnement aide à éviter les erreurs de cadrage et à gagner du temps.',
+  },
+]
+
+export const blogFaq = [
+  {
+    question: 'À quoi servent les ressources du blog ?',
+    answer:
+      'Les articles aident à comprendre les droits, les financements, l’AFDAS, France Travail et les démarches liées à la formation des intermittents du spectacle.',
+  },
+  {
+    question: 'Les articles remplacent-ils un diagnostic personnalisé ?',
+    answer:
+      'Non. Ils donnent des repères généraux. Chaque situation dépend de votre métier, de vos heures, de votre calendrier et du type de formation envisagé.',
+  },
+  {
+    question: 'Puis-je demander un accompagnement après avoir lu un article ?',
+    answer:
+      'Oui. Si un sujet correspond à votre situation, vous pouvez remplir Ma formation adaptée ou nous contacter pour clarifier les prochaines étapes.',
+  },
+]
 
 export const routeSeo: Record<string, SeoMeta> = {
   '/': {
@@ -80,7 +168,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     keywords:
       'financement AFDAS, intermittents du spectacle, prise en charge formation, France Travail, formation financée Paris',
     serviceName: 'Accompagnement au financement de formation',
-    faq: financingFaq.map((item) => ({ ...item })),
+    faq: financingFaq,
   },
   '/accompagnement': {
     title: 'Accompagnement personnalisé | France Intermittence',
@@ -91,8 +179,36 @@ export const routeSeo: Record<string, SeoMeta> = {
     keywords:
       'accompagnement intermittents, formation spectacle vivant, accompagnement AFDAS, intermittents Paris Île-de-France',
     serviceName: 'Accompagnement personnalisé pour intermittents du spectacle',
-    faq: supportFaq.map((item) => ({ ...item })),
+    faq: supportFaq,
   },
+  '/metiers': {
+    title: 'Métiers du spectacle | Formations pour intermittents',
+    description:
+      'Pages métiers pour intermittents du spectacle : comédiens, musiciens, techniciens, audiovisuel, danseurs, réalisateurs, monteurs et cadreurs.',
+    image: heroVisual,
+    type: 'website',
+    keywords:
+      'métiers du spectacle, formations intermittents, comédiens, musiciens, techniciens spectacle, audiovisuel, danseurs',
+    serviceName: 'Formations par métier pour intermittents du spectacle',
+    itemList: metierProfiles.map((profile) => ({
+      name: profile.shortTitle,
+      url: new URL(`/metiers/${profile.slug}`, siteConfig.siteUrl).toString(),
+    })),
+  },
+  ...Object.fromEntries(
+    metierProfiles.map((profile) => [
+      `/metiers/${profile.slug}`,
+      {
+        title: profile.seoTitle,
+        description: profile.seoDescription,
+        image: heroVisual,
+        type: 'website' as const,
+        keywords: profile.keywords,
+        serviceName: profile.title,
+        faq: getMetierFaq(profile),
+      },
+    ]),
+  ),
   '/ma-formation-adaptee': {
     title: 'Ma Formation Adaptée | France Intermittence',
     description:
@@ -102,7 +218,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     keywords:
       'formation adaptée intermittents, 507 heures, intermittents du spectacle, accompagnement formation Paris',
     serviceName: 'Orientation vers une formation adaptée',
-    faq: formFaq.map((item) => ({ ...item })),
+    faq: formFaq,
   },
   '/ma-formation-adaptee/confirmation': {
     title: 'Confirmation de votre demande | France Intermittence',
@@ -120,6 +236,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     type: 'website',
     keywords:
       'blog intermittents du spectacle, actualités AFDAS, droits intermittence, formation spectacle',
+    faq: blogFaq,
   },
   '/a-propos': {
     title: 'À propos | France Intermittence',
@@ -129,6 +246,13 @@ export const routeSeo: Record<string, SeoMeta> = {
     type: 'website',
     keywords:
       'France Intermittence, Qualiopi, intermittents du spectacle, formation professionnelle spectacle',
+    faq: aboutFaq,
+  },
+  '/admin': {
+    title: 'Admin | France Intermittence',
+    description: 'Espace d’administration France Intermittence.',
+    image: aboutVisual,
+    noindex: true,
   },
   '/mentions-legales': {
     title: 'Mentions légales | France Intermittence',
@@ -156,19 +280,86 @@ export const routeSeo: Record<string, SeoMeta> = {
   },
 }
 
+const logoUrl = siteImages.logoOfficiel
+
 export function buildStructuredData(pathname: string, meta: SeoMeta, breadcrumbs: Crumb[]) {
   const canonical = new URL(pathname, siteConfig.siteUrl).toString()
 
+  // Organization + ProfessionalService : entité désambiguïsée pour Google et
+  // les moteurs IA (logo, contact, zone desservie). `sameAs` sera ajouté dès
+  // que des profils sociaux/GBP existent — aucune URL n'est inventée ici.
   const organization = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
+    '@type': ['Organization', 'ProfessionalService'],
     name: siteConfig.brandName,
     url: siteConfig.siteUrl,
+    logo: logoUrl,
+    image: logoUrl,
     email: siteConfig.email,
     telephone: siteConfig.phoneDisplay,
     areaServed: siteConfig.areaServed,
     description: siteConfig.defaultDescription,
+    address: {
+      '@type': 'PostalAddress',
+      addressRegion: 'Île-de-France',
+      addressCountry: 'FR',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: siteConfig.phoneHref.replace('tel:', ''),
+      email: siteConfig.email,
+      contactType: 'customer service',
+      areaServed: 'FR',
+      availableLanguage: 'French',
+    },
   }
+
+  // WebSite : identité du site elle-même, distincte de l'organisation.
+  const websiteData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteConfig.brandName,
+    url: siteConfig.siteUrl,
+    publisher: { '@type': 'Organization', name: siteConfig.brandName },
+    inLanguage: 'fr-FR',
+  }
+
+  const itemListData = meta.itemList?.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        itemListElement: meta.itemList.map((entry, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: entry.name,
+          url: entry.url,
+        })),
+      }
+    : null
+
+  const articleData = meta.article
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: meta.title,
+        description: meta.description,
+        image: /^https?:\/\//.test(meta.image) ? meta.image : new URL(meta.image, siteConfig.siteUrl).toString(),
+        url: canonical,
+        inLanguage: 'fr-FR',
+        datePublished: meta.article.publishedAt,
+        dateModified: meta.article.modifiedAt ?? meta.article.publishedAt,
+        wordCount: meta.article.wordCount,
+        articleSection: meta.article.category,
+        keywords: meta.article.keywords?.join(', '),
+        author: { '@type': 'Organization', name: meta.article.authorName },
+        publisher: {
+          '@type': 'Organization',
+          name: siteConfig.brandName,
+          logo: { '@type': 'ImageObject', url: logoUrl },
+        },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+      }
+    : null
 
   const breadcrumbData = breadcrumbs.length
     ? {
@@ -214,5 +405,5 @@ export function buildStructuredData(pathname: string, meta: SeoMeta, breadcrumbs
       }
     : null
 
-  return [organization, breadcrumbData, serviceData, faqData].filter(Boolean)
+  return [organization, websiteData, breadcrumbData, serviceData, itemListData, articleData, faqData].filter(Boolean)
 }

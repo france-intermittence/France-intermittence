@@ -1,12 +1,28 @@
-import { useEffect, useState } from 'react'
-import { NavLink, Link } from 'react-router-dom'
-import officialLogo from '../../logo officiel/Logo officiel.svg'
+import { useEffect, useRef, useState } from 'react'
+import { NavLink, Link, useLocation } from 'react-router-dom'
+import { siteImages } from '../data/siteImages'
+import { metierProfiles } from '../data/metiers'
 import { siteConfig } from '../data/siteConfig'
+import { PhoneIcon } from './Icons'
+
+const officialLogo = siteImages.logoOfficiel
+
+const navItems = [
+  { to: '/', label: 'Accueil' },
+  { to: '/financement', label: 'Financement' },
+  { to: '/accompagnement', label: 'Accompagnement' },
+  { to: '/metiers', label: 'Métiers', dropdown: true },
+  { to: '/ma-formation-adaptee', label: 'Ma formation adaptée' },
+  { to: '/blog', label: 'Blog' },
+  { to: '/a-propos', label: 'À propos' },
+]
 
 export function Header() {
   const [open, setOpen] = useState(false)
   const [compact, setCompact] = useState(false)
-  const [collapsed, setCollapsed] = useState(false)
+  const [metiersOpen, setMetiersOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,14 +42,44 @@ export function Header() {
   useEffect(() => {
     if (!open) return
 
-    const closeMenu = () => setOpen(false)
+    const closeMenu = () => {
+      setOpen(false)
+      setMetiersOpen(false)
+    }
     window.addEventListener('resize', closeMenu)
 
     return () => window.removeEventListener('resize', closeMenu)
   }, [open])
 
+  useEffect(() => {
+    if (!metiersOpen) return
+
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
+        setMetiersOpen(false)
+      }
+    }
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMetiersOpen(false)
+    }
+
+    document.addEventListener('mousedown', closeOnOutsideClick)
+    document.addEventListener('keydown', closeOnEscape)
+
+    return () => {
+      document.removeEventListener('mousedown', closeOnOutsideClick)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [metiersOpen])
+
+  const closeMobileMenu = () => {
+    setOpen(false)
+    setMetiersOpen(false)
+  }
+
   return (
-    <header className={`site-header ${compact ? 'is-compact' : ''} ${open ? 'is-open' : ''} ${collapsed ? 'is-collapsed' : ''}`}>
+    <header className={`site-header ${compact ? 'is-compact' : ''} ${open ? 'is-open' : ''}`}>
       <div className="site-header__top-line" />
       <div className="site-header__inner">
         <Link to="/" className="site-header__brand" aria-label={siteConfig.brandName}>
@@ -53,48 +99,51 @@ export function Header() {
         </button>
 
         <nav className={`site-header__nav ${open ? 'is-open' : ''}`} aria-label="Navigation principale">
-          <NavLink to="/financement" className={({ isActive }) => (isActive ? 'site-header__nav-active' : '')}>
-            Financement
-          </NavLink>
-          <NavLink to="/accompagnement" className={({ isActive }) => (isActive ? 'site-header__nav-active' : '')}>
-            Accompagnement
-          </NavLink>
-          <NavLink to="/blog" className={({ isActive }) => (isActive ? 'site-header__nav-active' : '')}>
-            Blog
-          </NavLink>
-          <NavLink to="/a-propos" className={({ isActive }) => (isActive ? 'site-header__nav-active' : '')}>
-            À propos
-          </NavLink>
-          <NavLink to="/ma-formation-adaptee" className={({ isActive }) => (isActive ? 'site-header__nav-active' : '')}>
-            Ma formation adaptée
-          </NavLink>
+          {navItems.map((item) =>
+            item.dropdown ? (
+              <div className={`site-header__dropdown ${metiersOpen ? 'is-open' : ''}`} key={item.to} ref={dropdownRef}>
+                <button
+                  type="button"
+                  className={pathname.startsWith('/metiers') ? 'site-header__nav-active' : ''}
+                  aria-expanded={metiersOpen}
+                  aria-haspopup="true"
+                  onClick={() => setMetiersOpen((value) => !value)}
+                >
+                  {item.label}
+                  <span className="site-header__dropdown-chevron" aria-hidden="true" />
+                </button>
+                <div className="site-header__dropdown-menu" aria-label="Sélectionner un métier">
+                  <Link to="/metiers" onClick={closeMobileMenu}>
+                    Tous les métiers
+                  </Link>
+                  {metierProfiles.map((profile) => (
+                    <Link key={profile.slug} to={`/metiers/${profile.slug}`} onClick={closeMobileMenu}>
+                      {profile.shortTitle}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <NavLink key={item.to} to={item.to} className={({ isActive }) => (isActive ? 'site-header__nav-active' : '')} onClick={closeMobileMenu}>
+                {item.label}
+              </NavLink>
+            ),
+          )}
         </nav>
 
         <div className="site-header__actions">
-          <a href={siteConfig.emailHref} className="site-header__email-link">Nous contacter</a>
-          <a href={siteConfig.phoneHref} className="site-header__phone">
-            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path
-                d="M2 3a1 1 0 011-1h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-            </svg>
-            {siteConfig.phoneDisplay}
+          <a
+            href={siteConfig.phoneHref}
+            className="site-header__call-btn"
+            onClick={closeMobileMenu}
+            aria-label={`Nous contacter par téléphone au ${siteConfig.phoneDisplay}`}
+          >
+            <PhoneIcon className="site-header__call-icon" />
+            Nous contacter
           </a>
-          <Link to="/ma-formation-adaptee" className="fi-button fi-button--primary site-header__cta">
+          <Link to="/ma-formation-adaptee" className="fi-button fi-button--primary site-header__cta" onClick={closeMobileMenu}>
             Être rappelé
           </Link>
-          <button
-            type="button"
-            className={`site-header__collapse-btn ${collapsed ? 'is-collapsed' : ''}`}
-            aria-label={collapsed ? 'Afficher la navigation' : 'Réduire la navigation'}
-            onClick={() => setCollapsed((value) => !value)}
-          >
-            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
         </div>
       </div>
     </header>

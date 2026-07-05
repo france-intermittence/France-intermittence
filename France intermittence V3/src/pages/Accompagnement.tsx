@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom'
-import qualiopiLogo from '../../certifications et partenaire/Certifications qualiopi.png'
-import supportPhoto from '../../3- Recherches & Photos choisis/page dans accompagnement.png'
+import { siteImages } from '../data/siteImages'
 import { siteConfig } from '../data/siteConfig'
+
+const qualiopiLogo = siteImages.logoQualiopi
+const supportPhoto = siteImages.accompagnementPhotoAvif
+import { supportFaq } from '../data/seo'
+import { PageFaq } from '../components/PageFaq'
 import { Reveal } from '../components/Reveal'
 
 function IconContact() {
@@ -186,7 +190,7 @@ export function Accompagnement() {
 
           <div className="acc-card__main">
             <div className="acc-card__photo">
-              <img src={supportPhoto} alt="Conseillère France Intermittence en accompagnement personnalisé" loading="lazy" decoding="async" />
+              <img src={supportPhoto} alt="Conseillère France Intermittence en accompagnement personnalisé" loading="lazy" decoding="async" width={1122} height={1402} />
             </div>
 
             <ul className="acc-card__checks">
@@ -239,6 +243,10 @@ export function Accompagnement() {
       </Reveal>
 
       <Reveal>
+        <PageFaq title="Questions fréquentes sur l’accompagnement" items={supportFaq} />
+      </Reveal>
+
+      <Reveal>
         <section className="acc-cta">
           <div className="acc-cta__inner">
             <div className="acc-cta__left">
@@ -256,7 +264,7 @@ export function Accompagnement() {
             <div className="acc-cta__actions">
               <a href={siteConfig.phoneHref} className="acc-cta__btn acc-cta__btn--outline">
                 <PhoneIcon />
-                Appeler le {siteConfig.phoneDisplay}
+                Nous contacter
               </a>
               <Link to="/ma-formation-adaptee" className="acc-cta__btn acc-cta__btn--primary">
                 Trouver ma formation adaptée

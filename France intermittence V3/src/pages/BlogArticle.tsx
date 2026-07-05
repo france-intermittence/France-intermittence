@@ -2,16 +2,14 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import blogFeatured from '../../3- Recherches & Photos choisis/Page blog 1.png'
-import blogCumul from '../../3- Recherches & Photos choisis/Page blog 2.png'
-import { Breadcrumb, type Crumb } from '../components/Breadcrumb'
+import { siteImages } from '../data/siteImages'
 import { Seo } from '../components/Seo'
-import { siteConfig } from '../data/siteConfig'
+import type { Crumb } from '../data/seo'
 import { getPublishedBlogArticle, type BlogArticle as BlogArticleData } from '../services/blogArticles'
 
 const articleImages: Record<string, string> = {
-  '507-heures-intermittence-securiser-parcours': blogFeatured,
-  'intermittent-spectacle-etapes-entrer-regime': blogCumul,
+  '507-heures-intermittence-securiser-parcours': siteImages.blogFeaturedPng,
+  'intermittent-spectacle-etapes-entrer-regime': siteImages.blogCumulPng,
 }
 
 function formatDate(value: string): string {
@@ -63,8 +61,7 @@ export function BlogArticle() {
     )
   }
 
-  const image = article.featured_image_url ?? articleImages[article.slug] ?? blogFeatured
-  const absoluteImage = new URL(image, siteConfig.siteUrl).toString()
+  const image = article.featured_image_url ?? articleImages[article.slug] ?? siteImages.blogFeaturedPng
   const articleBody = article.content_markdown.replace(/^#\s+.+\r?\n+/, '')
   const breadcrumbs: Crumb[] = [
     { label: 'Accueil', to: '/' },
@@ -79,17 +76,20 @@ export function BlogArticle() {
         meta={{
           title: article.seo_title,
           description: article.meta_description,
-          image: absoluteImage,
+          image,
           keywords: [article.primary_keyword, ...article.secondary_keywords].join(', '),
           type: 'article',
           faq: article.faq,
+          article: {
+            authorName: article.author_name,
+            publishedAt: article.published_at,
+            wordCount: article.word_count ?? undefined,
+            category: article.category,
+            keywords: [article.primary_keyword, ...article.secondary_keywords],
+          },
         }}
         breadcrumbs={breadcrumbs}
       />
-
-      <div className="page-breadcrumb">
-        <Breadcrumb items={breadcrumbs} />
-      </div>
 
       <main className="blog-article-page">
         <header className="blog-article-hero">

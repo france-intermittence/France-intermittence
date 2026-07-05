@@ -1,7 +1,9 @@
-import iconSecurite from '../../icone/securité-32.svg'
-import qualiopiLogo from '../../certifications et partenaire/Certifications qualiopi.png'
-import afdasLogo from '../../certifications et partenaire/AFDAS.png'
-import franceTravailLogo from '../../certifications et partenaire/france-travail-logo-2048x726.png'
+import { siteImages } from '../data/siteImages'
+
+const iconSecurite = siteImages.iconSecurite
+const qualiopiLogo = siteImages.logoQualiopi
+const afdasLogo = siteImages.logoAfdas
+const franceTravailLogo = siteImages.logoFranceTravail
 
 export function TrustBanner() {
   return (

@@ -1,11 +1,11 @@
 export const siteConfig = {
   brandName: 'France Intermittence',
-  siteUrl: 'https://www.france-intermittence.fr',
+  siteUrl: 'https://france-intermittence.fr',
   defaultTitle: 'France Intermittence | Formations et financement pour intermittents du spectacle',
   defaultDescription:
     'France Intermittence accompagne les intermittents du spectacle dans le choix de leur formation, le financement AFDAS et les démarches en Île-de-France et partout en France.',
-  phoneDisplay: '01 70 38 38 10',
-  phoneHref: 'tel:0170383810',
+  phoneDisplay: '+33 7 77 32 52 43',
+  phoneHref: 'tel:+33777325243',
   email: 'contact@france-intermittence.fr',
   emailHref: 'mailto:contact@france-intermittence.fr',
   areaServed: ['Paris', 'Île-de-France', 'France'],
@@ -17,7 +17,7 @@ export const siteConfig = {
     hosting:
       'Site statique déployable sur un hébergement web compatible Vite (type Netlify, Vercel ou serveur classique).',
     contactEmail: 'contact@france-intermittence.fr',
-    contactPhone: '01 70 38 38 10',
+    contactPhone: '+33 7 77 32 52 43',
   },
 } as const
 

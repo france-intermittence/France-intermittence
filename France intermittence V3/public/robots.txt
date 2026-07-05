@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin
 
-Sitemap: https://www.france-intermittence.fr/sitemap.xml
+Sitemap: https://france-intermittence.fr/sitemap.xml

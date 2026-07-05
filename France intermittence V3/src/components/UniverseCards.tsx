@@ -5,7 +5,7 @@ import { IconCard } from './IconCard'
 export function UniverseCards() {
   return (
     <section className="universe-section" id="formations">
-      <h2 className="section-title">Explorer les univers de formation adaptés à votre métier</h2>
+      <h2 className="section-title">Des formations par métier, éligibles au financement AFDAS</h2>
       <div className="universe-section__grid">
         {universeItems.map((item) => (
           <IconCard

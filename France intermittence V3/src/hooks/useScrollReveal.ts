@@ -22,7 +22,10 @@ type UseScrollRevealOptions = {
 export function useScrollReveal<T extends HTMLElement = HTMLElement>(
   options: UseScrollRevealOptions = {},
 ) {
-  const { rootMargin = '0px 0px -12% 0px', threshold = 0.15, once = true } = options
+  // threshold=0 : se déclenche dès qu'un pixel entre dans le viewport (marge -12%).
+  // Un seuil proportionnel (ex. 0.15) échoue sur les sections plus hautes que le
+  // viewport, car le ratio visible/hauteur-totale ne peut alors jamais l'atteindre.
+  const { rootMargin = '0px 0px -12% 0px', threshold = 0, once = true } = options
   const ref = useRef<T | null>(null)
   // Garde-fou : si IntersectionObserver est indisponible, on affiche directement.
   const [isVisible, setIsVisible] = useState(

@@ -3,7 +3,7 @@ import { heroBenefits } from '../data/siteData'
 import { ArrowRightIcon, MessageIcon } from './Icons'
 import { TrustItems } from './TrustItems'
 import { siteConfig } from '../data/siteConfig'
-import heroPhoto from '../../3- Recherches & Photos choisis/photo_hero_financement_couple.png'
+import { siteImages } from '../data/siteImages'
 
 export function HeroSection() {
   return (
@@ -23,7 +23,7 @@ export function HeroSection() {
           </p>
           <div className="hero-section__actions">
             <Link to="/ma-formation-adaptee" className="fi-button fi-button--primary">
-              Être recontacté et trouver ma formation
+              Trouver ma formation gratuite
               <ArrowRightIcon />
             </Link>
             <Link to="/financement" className="fi-button fi-button--secondary">
@@ -38,19 +38,21 @@ export function HeroSection() {
 
         <div className="hero-section__visual">
           <img
-            src={heroPhoto}
+            src={siteImages.heroCoupleAvif}
             className="hero-section__art"
             alt="Deux professionnels échangent sur un projet de formation pour intermittents du spectacle"
             fetchPriority="high"
+            width={548}
+            height={394}
           />
           <article className="hero-section__floating-card">
             <span className="hero-section__floating-icon">
               <MessageIcon />
             </span>
             <div>
-              <h2>Un accompagnement basé à Paris, pensé pour toute l’Île-de-France</h2>
+              <h2>Un conseiller spécialisé intermittence vous répond</h2>
               <p>
-                Contact direct, étude du besoin et orientation rapide au {siteConfig.phoneDisplay}.
+                Étude gratuite de votre situation. Appelez le {siteConfig.phoneDisplay}.
               </p>
             </div>
           </article>

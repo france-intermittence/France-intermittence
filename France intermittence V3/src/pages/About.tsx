@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
-import aboutPhoto from '../../3- Recherches & Photos choisis/a propos.png'
-import qualiopiLogo from '../../certifications et partenaire/Certifications qualiopi.png'
-import certificationIcon from '../../icone/contrat , certifications-32.svg'
-import trainerIcon from '../../icone/casque-32.svg'
-import groupIcon from '../../icone/groupe-32.svg'
-import calendarIcon from '../../icone/Calendrier-32.svg'
-import shieldIcon from '../../icone/securité-32.svg'
+import { siteImages } from '../data/siteImages'
 import { siteConfig } from '../data/siteConfig'
+
+const aboutPhoto = siteImages.aboutPortraitAvif
+const qualiopiLogo = siteImages.logoQualiopi
+const certificationIcon = siteImages.iconContratCertification
+const trainerIcon = siteImages.iconCasque
+const groupIcon = siteImages.iconGroupe
+const calendarIcon = siteImages.iconCalendrier
+const shieldIcon = siteImages.iconSecurite
+import { aboutFaq } from '../data/seo'
+import { PageFaq } from '../components/PageFaq'
 import { Reveal } from '../components/Reveal'
 
 function ArrowIcon() {
@@ -110,19 +114,13 @@ const highlights = [
   },
 ] as const
 
-const reassureStats = [
-  { value: '507 h', label: 'le seuil qui peut ouvrir vos droits à la formation' },
-  { value: '0', label: 'démarche administrative à gérer de votre côté' },
-  { value: '1', label: 'interlocuteur dédié jusqu’à l’entrée en formation' },
-] as const
-
 export function About() {
   return (
     <main className="about-page">
       <Reveal>
       <section className="about-hero">
         <div className="about-hero__media">
-          <img src={aboutPhoto} alt="Portrait d’une conseillère France Intermittence" className="about-hero__image" decoding="async" />
+          <img src={aboutPhoto} alt="Portrait d’une conseillère France Intermittence" className="about-hero__image" decoding="async" width={1086} height={1448} />
         </div>
 
         <div className="about-hero__content">
@@ -154,7 +152,7 @@ export function About() {
                   <img src={feature.icon} alt="" loading="lazy" decoding="async" />
                 </div>
                 <div className="about-feature__body">
-                  <h2>{feature.title}</h2>
+                  <h3>{feature.title}</h3>
                   <p>{feature.description}</p>
                 </div>
               </article>
@@ -229,7 +227,7 @@ export function About() {
             <img src={calendarIcon} alt="" loading="lazy" decoding="async" />
           </div>
           <div>
-            <h2>Un cadre structuré</h2>
+            <h3>Un cadre structuré</h3>
             <p>Des parcours conçus pour sécuriser l’orientation, les démarches et l’entrée en formation.</p>
           </div>
         </article>
@@ -239,7 +237,7 @@ export function About() {
             <img src={shieldIcon} alt="" loading="lazy" decoding="async" />
           </div>
           <div>
-            <h2>Intermittents, Paris & Île-de-France</h2>
+            <h3>Intermittents, Paris & Île-de-France</h3>
             <p>Une expertise dédiée aux métiers du spectacle, avec accompagnement local et à distance selon les besoins.</p>
           </div>
         </article>
@@ -248,21 +246,7 @@ export function About() {
       </Reveal>
 
       <Reveal>
-        <section className="about-reassure" aria-label="Ce que ça change pour vous">
-          <p className="about-reassure__eyebrow">Ce que ça change pour vous</p>
-          <div className="about-reassure__stats">
-            {reassureStats.map((stat) => (
-              <div key={stat.label} className="about-reassure__stat">
-                <span className="about-reassure__stat-value">{stat.value}</span>
-                <span className="about-reassure__stat-label">{stat.label}</span>
-              </div>
-            ))}
-          </div>
-          <p className="about-reassure__note">
-            Selon votre situation et vos droits, votre formation peut vous coûter 0 €. Nous le
-            vérifions avec vous, sans démarche administrative à votre charge.
-          </p>
-        </section>
+        <PageFaq title="Questions fréquentes sur France Intermittence" items={aboutFaq} />
       </Reveal>
 
       <Reveal>

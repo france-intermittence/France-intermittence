@@ -1,6 +1,8 @@
-import assistanceIcon from '../../icone/design appel assistance (2).svg'
+import { siteImages } from '../data/siteImages'
 import { MailIcon, PhoneIcon } from './Icons'
 import { siteConfig } from '../data/siteConfig'
+
+const assistanceIcon = siteImages.iconAppelAssistance
 
 export function ContactCard() {
   return (

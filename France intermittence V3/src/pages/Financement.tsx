@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom'
-import heroPhoto from '../../3- Recherches & Photos choisis/photo_hero_financement_couple.png'
-import qualiopiLogo from '../../certifications et partenaire/Certifications qualiopi.png'
-import afdasLogo from '../../certifications et partenaire/AFDAS.png'
-import franceTravailLogo from '../../certifications et partenaire/france-travail-logo-2048x726.png'
-import iconSecurite from '../../icone/securité-32.svg'
-import iconFormations from '../../icone/Formations-32.svg'
-import iconGroupe from '../../icone/groupe-32.svg'
+import { siteImages } from '../data/siteImages'
 import { siteConfig } from '../data/siteConfig'
+import { financingFaq } from '../data/seo'
 import { Reveal } from '../components/Reveal'
+
+const heroPhoto = siteImages.heroCoupleAvif
+const qualiopiLogo = siteImages.logoQualiopi
+const afdasLogo = siteImages.logoAfdas
+const franceTravailLogo = siteImages.logoFranceTravail
+const iconSecurite = siteImages.iconSecurite
+const iconFormations = siteImages.iconFormations
+const iconGroupe = siteImages.iconGroupe
 
 const heroBadges = [
   { icon: iconSecurite, label: 'Certifié', sub: 'Qualiopi' },
@@ -35,24 +38,6 @@ const steps = [
     building: true,
     title: 'La formation peut démarrer dans un cadre sécurisé',
     desc: 'Quand la prise en charge est validée, vous avancez sereinement, avec un parcours plus lisible et moins d’incertitude.',
-  },
-]
-
-const faqs = [
-  {
-    question: 'Les formations peuvent-elles être financées par l’AFDAS ?',
-    answer:
-      'Oui, selon vos droits et votre situation. France Intermittence vous aide à comprendre l’éligibilité possible et à préparer le bon dossier.',
-  },
-  {
-    question: 'Dois-je avancer les frais de formation ?',
-    answer:
-      'Selon le cadre de prise en charge obtenu, le paiement peut être versé directement à l’organisme. Nous vous expliquons le scénario applicable à votre situation.',
-  },
-  {
-    question: 'Intervenez-vous seulement à Paris ?',
-    answer:
-      'L’accompagnement est pensé depuis Paris et l’Île-de-France, mais des demandes peuvent aussi être suivies à distance selon les besoins.',
   },
 ]
 
@@ -133,7 +118,7 @@ export function Financement() {
         </div>
 
         <div className="fin-hero__visual">
-          <img src={heroPhoto} alt="Deux personnes étudient un dossier de formation et de financement" decoding="async" />
+          <img src={heroPhoto} alt="Deux personnes étudient un dossier de formation et de financement" decoding="async" width={548} height={394} />
         </div>
       </section>
       </Reveal>
@@ -234,13 +219,16 @@ export function Financement() {
           <h2 className="fin-faq__title">Les réponses utiles avant de lancer votre dossier</h2>
         </div>
         <div className="fin-faq__grid">
-          {faqs.map((item) => (
+          {financingFaq.map((item) => (
             <article key={item.question} className="fin-faq__item">
               <h3>{item.question}</h3>
               <p>{item.answer}</p>
             </article>
           ))}
         </div>
+        <p className="fin-faq__more">
+          Pour aller plus loin : <Link to="/blog/contributions-formation-role-afdas-intermittent">comprendre le rôle de l’Afdas et des contributions formation</Link>.
+        </p>
       </section>
       </Reveal>
 

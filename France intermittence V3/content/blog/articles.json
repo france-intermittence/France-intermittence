@@ -57,6 +57,7 @@
       { "label": "Comprendre le financement", "url": "/financement" },
       { "label": "Être accompagné dans ses démarches", "url": "/accompagnement" },
       { "label": "Découvrir France Intermittence", "url": "/a-propos" },
+      { "label": "Explorer les formations par métier", "url": "/metiers" },
       { "label": "Consulter les autres ressources", "url": "/blog" }
     ],
     "sourceUrls": [
@@ -137,6 +138,7 @@
       { "label": "Découvrir l’accompagnement", "url": "/accompagnement" },
       { "label": "Préparer le financement d’une formation", "url": "/financement" },
       { "label": "Comprendre notre approche", "url": "/a-propos" },
+      { "label": "Explorer les formations par métier", "url": "/metiers" },
       { "label": "Lire les autres articles", "url": "/blog" }
     ],
     "sourceUrls": [
@@ -217,6 +219,7 @@
       { "label": "Présenter mon projet", "url": "/ma-formation-adaptee" },
       { "label": "Découvrir l’accompagnement", "url": "/accompagnement" },
       { "label": "Préparer le financement", "url": "/financement" },
+      { "label": "Explorer les formations par métier", "url": "/metiers" },
       { "label": "Lire les autres articles", "url": "/blog" }
     ],
     "sourceUrls": [
@@ -294,6 +297,7 @@
       { "label": "Trouver ma formation adaptée", "url": "/ma-formation-adaptee" },
       { "label": "Comprendre le financement", "url": "/financement" },
       { "label": "Être accompagné", "url": "/accompagnement" },
+      { "label": "Explorer les formations par métier", "url": "/metiers" },
       { "label": "Lire les autres articles", "url": "/blog" }
     ],
     "sourceUrls": [
@@ -370,6 +374,7 @@
       { "label": "Comprendre les financements", "url": "/financement" },
       { "label": "Lire le guide des heures assimilées", "url": "/blog/heures-formation-assimilees-507-heures" },
       { "label": "Être accompagné", "url": "/accompagnement" },
+      { "label": "Explorer les formations par métier", "url": "/metiers" },
       { "label": "Lire les autres articles", "url": "/blog" }
     ],
     "sourceUrls": [

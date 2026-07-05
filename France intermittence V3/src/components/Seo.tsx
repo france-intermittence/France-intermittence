@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
-import { buildStructuredData, type SeoMeta } from '../data/seo'
+import { buildStructuredData, type Crumb, type SeoMeta } from '../data/seo'
 import { siteConfig } from '../data/siteConfig'
-import type { Crumb } from './Breadcrumb'
 
 type SeoProps = {
   pathname: string
@@ -38,6 +37,7 @@ function upsertLink(selector: string, attributes: Record<string, string>) {
 export function Seo({ pathname, meta, breadcrumbs }: SeoProps) {
   useEffect(() => {
     const canonical = new URL(pathname, siteConfig.siteUrl).toString()
+    const absoluteImage = new URL(meta.image, siteConfig.siteUrl).toString()
     const structuredData = buildStructuredData(pathname, meta, breadcrumbs)
 
     document.title = meta.title
@@ -54,14 +54,14 @@ export function Seo({ pathname, meta, breadcrumbs }: SeoProps) {
     upsertMeta('meta[property="og:description"]', { property: 'og:description', content: meta.description })
     upsertMeta('meta[property="og:type"]', { property: 'og:type', content: meta.type ?? 'website' })
     upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonical })
-    upsertMeta('meta[property="og:image"]', { property: 'og:image', content: meta.image })
+    upsertMeta('meta[property="og:image"]', { property: 'og:image', content: absoluteImage })
     upsertMeta('meta[property="og:locale"]', { property: 'og:locale', content: 'fr_FR' })
     upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: siteConfig.brandName })
 
     upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' })
     upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: meta.title })
     upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: meta.description })
-    upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: meta.image })
+    upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: absoluteImage })
 
     upsertLink('link[rel="canonical"]', { rel: 'canonical', href: canonical })
 

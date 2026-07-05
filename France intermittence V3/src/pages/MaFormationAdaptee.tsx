@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import iconObjectif from '../../icone/Formations-32.svg'
-import iconGroupe from '../../icone/groupe-32.svg'
-import iconTimer from '../../icone/Timer-32.svg'
+import { siteImages } from '../data/siteImages'
+import { PageFaq } from '../components/PageFaq'
 import { TrustBanner } from '../components/TrustBanner'
 import { submitLead, type LeadData } from '../services/submitLead'
 import { trackConversion } from '../lib/track'
+import { formFaq } from '../data/seo'
+import { siteConfig } from '../data/siteConfig'
+
+const iconObjectif = siteImages.iconFormations
+const iconGroupe = siteImages.iconGroupe
+const iconTimer = siteImages.iconTimer
 
 const badges = [
   { icon: iconObjectif, label: 'Objectif', sub: 'viser les 507 heures' },
@@ -22,6 +27,7 @@ const domaines = [
   'Production / administration',
   'Autre',
 ]
+
 
 type FormErrors = Partial<Record<keyof LeadData, string>>
 
@@ -392,17 +398,22 @@ export function MaFormationAdaptee() {
           )}
 
           <button type="submit" className="mfa-form__submit" disabled={submitting} aria-busy={submitting}>
-            {submitting ? 'Envoi…' : 'Lancer ma simulation'}
+            {submitting ? 'Envoi…' : 'Recevoir mon orientation gratuite'}
             {!submitting && (
               <svg viewBox="0 0 20 20" fill="none">
                 <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             )}
           </button>
+          <p className="mfa-form__reassurance">
+            Gratuit et sans engagement · Réponse sous 24-48 h · 2 minutes ·{' '}
+            <a href={siteConfig.phoneHref}>ou appelez le {siteConfig.phoneDisplay}</a>
+          </p>
         </form>
       </div>
 
       <TrustBanner />
+      <PageFaq title="Questions fréquentes avant d’envoyer votre demande" items={formFaq} />
     </div>
   )
 }

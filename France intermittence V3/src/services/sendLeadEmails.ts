@@ -1,15 +1,11 @@
 import emailjs from '@emailjs/browser'
-import officialLogo from '../../logo officiel/Logo officiel.svg'
+import { siteImages } from '../data/siteImages'
 import type { LeadData } from './submitLead'
 
 const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const notificationTemplateId = import.meta.env.VITE_EMAILJS_NOTIFICATION_TEMPLATE_ID
 const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID
 const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-
-function getLogoUrl(): string {
-  return new URL(officialLogo, window.location.origin).href
-}
 
 function getProfilLabel(profil: LeadData['profil']): string {
   if (profil === 'intermittent') return 'Intermittent du spectacle'
@@ -34,7 +30,7 @@ export async function sendLeadEmails(data: LeadData, reference: string): Promise
     heures_realisees: data.heuresRealisees,
     date_anniversaire: data.dateAnniversaire,
     profil: getProfilLabel(data.profil),
-    logo_url: getLogoUrl(),
+    logo_url: siteImages.logoOfficiel,
   }
 
   try {

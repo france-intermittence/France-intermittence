@@ -4,8 +4,8 @@ export const siteConfig = {
   defaultTitle: 'France Intermittence | Formations et financement pour intermittents du spectacle',
   defaultDescription:
     'France Intermittence accompagne les intermittents du spectacle dans le choix de leur formation, le financement AFDAS et les démarches en Île-de-France et partout en France.',
-  phoneDisplay: '+33 7 77 32 52 43',
-  phoneHref: 'tel:+33777325243',
+  phoneDisplay: '+33 6 76 55 00 59',
+  phoneHref: 'tel:+33676550059',
   email: 'contact@france-intermittence.fr',
   emailHref: 'mailto:contact@france-intermittence.fr',
   areaServed: ['Paris', 'Île-de-France', 'France'],
@@ -22,7 +22,7 @@ export const siteConfig = {
       'Site statique déployable sur un hébergement web compatible Vite (type Netlify, Vercel ou serveur classique).',
     hostingProvider: 'Netlify, Inc. — 44 Montgomery Street, Suite 300, San Francisco, CA 94104, États-Unis.',
     contactEmail: 'contact@france-intermittence.fr',
-    contactPhone: '+33 7 77 32 52 43',
+    contactPhone: '+33 6 76 55 00 59',
   },
 } as const
 

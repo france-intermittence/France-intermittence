@@ -5,10 +5,11 @@
 import { siteImages } from './siteImages'
 import { siteConfig } from './siteConfig'
 
-const heroVisual = siteImages.heroCouplePng
 const aboutVisual = siteImages.aboutPortraitPng
-const financementVisual = siteImages.heroCouplePng
-const blogVisual = siteImages.blogFeaturedPng
+// Logo carré (même visuel que le favicon), servi depuis /public : utilisé comme
+// aperçu de partage (WhatsApp, Facebook, LinkedIn...) sur les pages "vitrine".
+// Les articles de blog gardent leur propre photo (voir BlogArticle.tsx).
+const logoVisual = '/web-app-manifest-512x512.png'
 import { getMetierFaq, metierProfiles } from './metiers'
 
 export type Crumb = { label: string; to?: string }
@@ -153,7 +154,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'France Intermittence | Formations et financement pour intermittents du spectacle',
     description:
       'Formations pour intermittents du spectacle, accompagnement humain, financement AFDAS et démarches simplifiées à Paris, en Île-de-France et partout en France.',
-    image: heroVisual,
+    image: logoVisual,
     type: 'website',
     keywords:
       'intermittents du spectacle, formation intermittents, financement AFDAS, Paris, Île-de-France, France Intermittence',
@@ -163,7 +164,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'Financement AFDAS | France Intermittence',
     description:
       'Découvrez comment financer votre formation avec l’AFDAS ou France Travail. France Intermittence vous accompagne dans les droits, le dossier et la prise en charge.',
-    image: financementVisual,
+    image: logoVisual,
     type: 'website',
     keywords:
       'financement AFDAS, intermittents du spectacle, prise en charge formation, France Travail, formation financée Paris',
@@ -174,7 +175,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'Accompagnement personnalisé | France Intermittence',
     description:
       'France Intermittence accompagne les intermittents du spectacle à chaque étape: diagnostic, orientation, dossier et entrée en formation en Île-de-France et partout en France.',
-    image: aboutVisual,
+    image: logoVisual,
     type: 'website',
     keywords:
       'accompagnement intermittents, formation spectacle vivant, accompagnement AFDAS, intermittents Paris Île-de-France',
@@ -185,7 +186,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'Métiers du spectacle | Formations pour intermittents',
     description:
       'Pages métiers pour intermittents du spectacle : comédiens, musiciens, techniciens, audiovisuel, danseurs, réalisateurs, monteurs et cadreurs.',
-    image: heroVisual,
+    image: logoVisual,
     type: 'website',
     keywords:
       'métiers du spectacle, formations intermittents, comédiens, musiciens, techniciens spectacle, audiovisuel, danseurs',
@@ -201,7 +202,7 @@ export const routeSeo: Record<string, SeoMeta> = {
       {
         title: profile.seoTitle,
         description: profile.seoDescription,
-        image: heroVisual,
+        image: logoVisual,
         type: 'website' as const,
         keywords: profile.keywords,
         serviceName: profile.title,
@@ -213,7 +214,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'Ma Formation Adaptée | France Intermittence',
     description:
       'Présentez votre situation et trouvez la formation adaptée à votre parcours d’intermittent du spectacle avec l’accompagnement de France Intermittence.',
-    image: heroVisual,
+    image: logoVisual,
     type: 'website',
     keywords:
       'formation adaptée intermittents, 507 heures, intermittents du spectacle, accompagnement formation Paris',
@@ -224,7 +225,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'Confirmation de votre demande | France Intermittence',
     description:
       'Votre demande de formation adaptée a bien été prise en compte par France Intermittence.',
-    image: heroVisual,
+    image: logoVisual,
     noindex: true,
     type: 'website',
   },
@@ -232,7 +233,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'Blog intermittence et formation | France Intermittence',
     description:
       'Actualités, conseils, droits, financement AFDAS et ressources pour les intermittents du spectacle en Île-de-France et partout en France.',
-    image: blogVisual,
+    image: logoVisual,
     type: 'website',
     keywords:
       'blog intermittents du spectacle, actualités AFDAS, droits intermittence, formation spectacle',
@@ -242,7 +243,7 @@ export const routeSeo: Record<string, SeoMeta> = {
     title: 'À propos | France Intermittence',
     description:
       'Découvrez France Intermittence, son expertise, sa certification Qualiopi, son accompagnement métier et son engagement auprès des intermittents du spectacle.',
-    image: aboutVisual,
+    image: logoVisual,
     type: 'website',
     keywords:
       'France Intermittence, Qualiopi, intermittents du spectacle, formation professionnelle spectacle',
@@ -257,31 +258,31 @@ export const routeSeo: Record<string, SeoMeta> = {
   '/mentions-legales': {
     title: 'Mentions légales | France Intermittence',
     description: 'Informations légales relatives au site France Intermittence.',
-    image: aboutVisual,
+    image: logoVisual,
     noindex: true,
   },
   '/politique-confidentialite': {
     title: 'Politique de confidentialité | France Intermittence',
     description: 'Politique de confidentialité et traitement des données personnelles de France Intermittence.',
-    image: aboutVisual,
+    image: logoVisual,
     noindex: true,
   },
   '/cookies': {
     title: 'Cookies | France Intermittence',
     description: 'Informations sur l’usage des cookies et technologies similaires.',
-    image: aboutVisual,
+    image: logoVisual,
     noindex: true,
   },
   '/cgu': {
     title: 'CGU | France Intermittence',
     description: 'Conditions générales d’utilisation du site France Intermittence.',
-    image: aboutVisual,
+    image: logoVisual,
     noindex: true,
   },
   '/plan-du-site': {
     title: 'Plan du site | France Intermittence',
     description: 'Retrouvez toutes les pages du site France Intermittence : financement, accompagnement, métiers, blog et informations légales.',
-    image: aboutVisual,
+    image: logoVisual,
   },
 }
 

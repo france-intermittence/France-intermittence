@@ -386,7 +386,53 @@ export function Admin() {
 
         {message && <p className="admin-message">{message}</p>}
 
-        {(tab === 'dashboard' || tab === 'stats') && (
+        {tab === 'dashboard' && (
+          <>
+            <div className="admin-stats">
+              <StatTile icon={<InboxIcon />} label="Leads au total" value={stats?.leads_total ?? 0} />
+              <StatTile
+                icon={<ChartIcon />}
+                label="Leads sur 7 jours"
+                value={leadsDelta.current}
+                deltaPct={leadsDelta.deltaPct}
+                deltaLabel="vs 7 jours précédents"
+              />
+              <StatTile icon={<TrendUpIcon />} label="Taux de conversion" value={`${conversion.ratePct}%`} />
+              <StatTile icon={<ArticleIcon />} label="Articles publiés" value={stats?.articles_published ?? 0} />
+            </div>
+
+            <div className="admin-shortcut-grid">
+              <button type="button" className="admin-card admin-shortcut" onClick={() => setTab('stats')}>
+                <span className="admin-shortcut__icon"><ChartIcon /></span>
+                <div className="admin-shortcut__body">
+                  <h3>Statistiques détaillées</h3>
+                  <p>Évolution des leads, clics sur Appeler / Être rappelé, pages les plus consultées.</p>
+                </div>
+                <span className="admin-shortcut__arrow" aria-hidden="true">→</span>
+              </button>
+
+              <button type="button" className="admin-card admin-shortcut" onClick={() => setTab('leads')}>
+                <span className="admin-shortcut__icon"><InboxIcon /></span>
+                <div className="admin-shortcut__body">
+                  <h3>Leads <span className="admin-shortcut__count">{stats?.leads_total ?? 0}</span></h3>
+                  <p>Consulter, contacter et suivre les demandes reçues via le formulaire.</p>
+                </div>
+                <span className="admin-shortcut__arrow" aria-hidden="true">→</span>
+              </button>
+
+              <button type="button" className="admin-card admin-shortcut" onClick={() => setTab('articles')}>
+                <span className="admin-shortcut__icon"><ArticleIcon /></span>
+                <div className="admin-shortcut__body">
+                  <h3>Articles <span className="admin-shortcut__count">{stats?.articles_published ?? 0} publiés</span></h3>
+                  <p>Rédiger, publier et mettre à jour les contenus du blog.</p>
+                </div>
+                <span className="admin-shortcut__arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+          </>
+        )}
+
+        {tab === 'stats' && (
           <>
             <div className="admin-stats">
               <StatTile icon={<InboxIcon />} label="Leads au total" value={stats?.leads_total ?? 0} />

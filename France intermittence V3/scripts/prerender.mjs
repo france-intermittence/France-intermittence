@@ -37,6 +37,7 @@ async function collectRoutes() {
     '/blog',
     ...articles.map((article) => `/blog/${article.slug}`),
     '/a-propos',
+    '/plan-du-site',
   ]
 }
 

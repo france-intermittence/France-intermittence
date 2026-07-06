@@ -33,6 +33,7 @@ const entries = [
   { path: '/blog', priority: '0.8', changefreq: 'weekly' },
   ...articles.map((article) => ({ path: `/blog/${article.slug}`, priority: '0.6', changefreq: 'monthly' })),
   { path: '/a-propos', priority: '0.5', changefreq: 'yearly' },
+  { path: '/plan-du-site', priority: '0.3', changefreq: 'monthly' },
 ]
 
 const today = new Date().toISOString().slice(0, 10)

@@ -278,6 +278,11 @@ export const routeSeo: Record<string, SeoMeta> = {
     image: aboutVisual,
     noindex: true,
   },
+  '/plan-du-site': {
+    title: 'Plan du site | France Intermittence',
+    description: 'Retrouvez toutes les pages du site France Intermittence : financement, accompagnement, métiers, blog et informations légales.',
+    image: aboutVisual,
+  },
 }
 
 const logoUrl = siteImages.logoOfficiel

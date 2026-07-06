@@ -1,9 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getStoredConsent, setConsent } from '../lib/cookieConsent'
+import { CONSENT_CHANGE_EVENT, getStoredConsent, setConsent } from '../lib/cookieConsent'
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(() => !getStoredConsent())
+
+  useEffect(() => {
+    function handleConsentChange(event: Event) {
+      const detail = (event as CustomEvent<'accepted' | 'refused' | null>).detail
+      if (detail === null) setVisible(true)
+    }
+
+    window.addEventListener(CONSENT_CHANGE_EVENT, handleConsentChange)
+    return () => window.removeEventListener(CONSENT_CHANGE_EVENT, handleConsentChange)
+  }, [])
 
   if (!visible) return null
 

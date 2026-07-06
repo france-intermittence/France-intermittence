@@ -2,110 +2,116 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://france-intermittence.fr/</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/financement</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/accompagnement</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/ma-formation-adaptee</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/metiers</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/metiers/comediens</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/metiers/musiciens</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/metiers/techniciens-spectacle</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/metiers/audiovisuel</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/metiers/danseurs</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/metiers/realisateurs-monteurs-cadreurs</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/blog</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/blog/507-heures-intermittence-securiser-parcours</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/blog/intermittent-spectacle-etapes-entrer-regime</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/blog/periode-reference-date-anniversaire-intermittents</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/blog/heures-formation-assimilees-507-heures</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/blog/contributions-formation-role-afdas-intermittent</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://france-intermittence.fr/a-propos</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://france-intermittence.fr/plan-du-site</loc>
+    <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

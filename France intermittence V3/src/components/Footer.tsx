@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { siteImages } from '../data/siteImages'
 import { footerColumns, legalLinks, siteConfig } from '../data/siteConfig'
+import { reopenConsentBanner } from '../lib/cookieConsent'
 
 const officialLogo = siteImages.logoOfficiel
 const qualiopiLogo = siteImages.logoQualiopi
@@ -67,12 +68,21 @@ export function Footer() {
       <div className="site-footer__bottom">
         <div className="site-footer__bottom-inner">
           <span>© {new Date().getFullYear()} {siteConfig.brandName}. Tous droits réservés.</span>
+          <p className="site-footer__credit">
+            Site réalisé par{' '}
+            <a href="https://webfityou.com/" target="_blank" rel="noreferrer noopener">
+              WebFitYou
+            </a>
+          </p>
           <div className="site-footer__legal">
             {legalLinks.map((link) => (
               <Link key={link.label} to={link.to}>
                 {link.label}
               </Link>
             ))}
+            <button type="button" className="site-footer__manage-cookies" onClick={reopenConsentBanner}>
+              Gérer les cookies
+            </button>
           </div>
         </div>
       </div>

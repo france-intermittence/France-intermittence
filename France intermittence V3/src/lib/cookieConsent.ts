@@ -30,6 +30,12 @@ export function setConsent(value: ConsentValue): void {
   window.dispatchEvent(new CustomEvent(CONSENT_CHANGE_EVENT, { detail: value }))
 }
 
+/** Efface le choix mémorisé et réaffiche le bandeau (lien "Gérer les cookies" du footer). */
+export function reopenConsentBanner(): void {
+  localStorage.removeItem(CONSENT_KEY)
+  window.dispatchEvent(new CustomEvent(CONSENT_CHANGE_EVENT, { detail: null }))
+}
+
 export function hasAnalyticsConsent(): boolean {
   return getStoredConsent()?.value === 'accepted'
 }

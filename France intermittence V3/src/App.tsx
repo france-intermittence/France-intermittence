@@ -38,6 +38,7 @@ const Metiers = lazy(() => import('./pages/Metiers').then((m) => ({ default: m.M
 const Admin = lazy(() => import('./pages/Admin').then((m) => ({ default: m.Admin })))
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
 const LegalPage = lazy(() => import('./pages/LegalPage').then((m) => ({ default: m.LegalPage })))
+const PlanDuSite = lazy(() => import('./pages/PlanDuSite').then((m) => ({ default: m.PlanDuSite })))
 
 const breadcrumbs: Record<string, Crumb[]> = {
   '/': [{ label: 'Accueil' }],
@@ -63,6 +64,7 @@ const breadcrumbs: Record<string, Crumb[]> = {
   '/politique-confidentialite': [{ label: 'Accueil', to: '/' }, { label: 'Politique de confidentialité' }],
   '/cookies': [{ label: 'Accueil', to: '/' }, { label: 'Cookies' }],
   '/cgu': [{ label: 'Accueil', to: '/' }, { label: 'CGU' }],
+  '/plan-du-site': [{ label: 'Accueil', to: '/' }, { label: 'Plan du site' }],
 }
 
 // Meta de repli pour toute route inconnue (soft-404) : jamais indexée, jamais
@@ -171,6 +173,7 @@ function App() {
             path="/cgu"
             element={<LegalPage title={legalPages.cgu.title} intro={legalPages.cgu.intro} sections={legalPages.cgu.sections} />}
           />
+          <Route path="/plan-du-site" element={<PlanDuSite />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         </div>

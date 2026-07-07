@@ -48,6 +48,14 @@ function ArrowIcon() {
   )
 }
 
+function ChevronLeftIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none">
+      <path d="M16 10H4M9 5l-5 5 5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function PhoneIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none">
@@ -67,11 +75,14 @@ function HandsHeartIcon() {
   )
 }
 
+const ARTICLES_PER_PAGE = 4
+
 export function Blog() {
   const [articles, setArticles] = useState<BlogArticle[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     let active = true
@@ -106,8 +117,19 @@ export function Blog() {
         return normalizeSearch(searchableContent).includes(normalizedQuery)
       })
     : articles
-  const featured = filteredArticles.find((article) => article.is_featured) ?? filteredArticles[0]
-  const sideArticles = filteredArticles.filter((article) => article.id !== featured?.id)
+
+  useEffect(() => {
+    setPage(1)
+  }, [normalizedQuery])
+
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE))
+  const currentPage = Math.min(page, totalPages)
+  const pageArticles = filteredArticles.slice(
+    (currentPage - 1) * ARTICLES_PER_PAGE,
+    currentPage * ARTICLES_PER_PAGE,
+  )
+  const featured = pageArticles[0]
+  const sideArticles = pageArticles.slice(1)
 
   return (
     <div className="blog-page">
@@ -210,6 +232,28 @@ export function Blog() {
             </div>
           </div>
         </Reveal>
+      )}
+
+      {!loading && !error && totalPages > 1 && (
+        <nav className="blog-pagination" aria-label="Pagination des articles">
+          <button
+            type="button"
+            onClick={() => setPage((current) => Math.max(1, current - 1))}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeftIcon /> Précédent
+          </button>
+          <span className="blog-pagination__status">
+            Page {currentPage} / {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+            disabled={currentPage === totalPages}
+          >
+            Suivant <ArrowIcon />
+          </button>
+        </nav>
       )}
 
       {!loading && !error && !featured && (

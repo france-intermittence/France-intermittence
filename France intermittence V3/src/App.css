@@ -66,7 +66,7 @@
 
 .site-header__logo-image {
   display: block;
-  height: 52px;
+  height: 68px;
   width: auto;
   flex-shrink: 0;
   transition: height 180ms ease;
@@ -250,7 +250,7 @@
 }
 
 .site-header.is-compact .site-header__logo-image {
-  height: 42px;
+  height: 56px;
 }
 
 .site-header.is-compact .site-header__nav {
@@ -1561,9 +1561,8 @@
 }
 
 .site-footer__logo {
-  width: 148px;
+  width: 200px;
   height: auto;
-  filter: brightness(0) invert(1);
 }
 
 .site-footer__quality-logo {
@@ -1684,13 +1683,20 @@
 .site-footer__bottom-inner {
   width: min(1180px, calc(100vw - 32px));
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
   padding: 16px 0;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.4);
+}
+
+.site-footer__copyright-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .site-footer__credit {
@@ -6007,7 +6013,7 @@ button.admin-modal__close:hover {
 
   .site-header__logo-image,
   .site-header.is-compact .site-header__logo-image {
-    height: 40px;
+    height: 52px;
   }
 
   .site-header__burger {

@@ -27,6 +27,10 @@ export const siteImages = {
   logoQualiopi: `${BASE}/logo-certification-qualiopi-formation.png`,
   logoFranceTravail: `${BASE}/logo-france-travail-partenaire.png`,
   logoOfficiel: `${BASE}/logo-france-intermittence.svg`,
+  logoFooter:
+    'https://mcykcupkczgsufxklmbr.supabase.co/storage/v1/object/public/images%20du%20site/Logo-France-Intermittence-Formations-ile-de-France2.webp',
+  logoHeader:
+    'https://mcykcupkczgsufxklmbr.supabase.co/storage/v1/object/public/images%20du%20site/logo-F-I.webp',
   iconCalendrier: `${BASE}/icone-calendrier-formation.svg`,
   iconFormations: `${BASE}/icone-formations-parcours.svg`,
   iconTimer: `${BASE}/icone-delai-reponse-rapide.svg`,

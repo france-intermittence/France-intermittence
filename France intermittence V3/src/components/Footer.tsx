@@ -3,7 +3,7 @@ import { siteImages } from '../data/siteImages'
 import { footerColumns, legalLinks, siteConfig } from '../data/siteConfig'
 import { reopenConsentBanner } from '../lib/cookieConsent'
 
-const officialLogo = siteImages.logoOfficiel
+const officialLogo = siteImages.logoFooter
 const qualiopiLogo = siteImages.logoQualiopi
 
 export function Footer() {
@@ -67,13 +67,15 @@ export function Footer() {
 
       <div className="site-footer__bottom">
         <div className="site-footer__bottom-inner">
-          <span>© {new Date().getFullYear()} {siteConfig.brandName}. Tous droits réservés.</span>
-          <p className="site-footer__credit">
-            Site réalisé par{' '}
-            <a href="https://webfityou.com/" target="_blank" rel="noreferrer noopener">
-              WebFitYou
-            </a>
-          </p>
+          <div className="site-footer__copyright-group">
+            <span>© {new Date().getFullYear()} {siteConfig.brandName}. Tous droits réservés.</span>
+            <p className="site-footer__credit">
+              Site réalisé par{' '}
+              <a href="https://webfityou.com/" target="_blank" rel="noreferrer noopener">
+                WebFitYou
+              </a>
+            </p>
+          </div>
           <div className="site-footer__legal">
             {legalLinks.map((link) => (
               <Link key={link.label} to={link.to}>

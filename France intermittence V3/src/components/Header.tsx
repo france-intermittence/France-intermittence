@@ -5,7 +5,7 @@ import { metierProfiles } from '../data/metiers'
 import { siteConfig } from '../data/siteConfig'
 import { PhoneIcon } from './Icons'
 
-const officialLogo = siteImages.logoOfficiel
+const officialLogo = siteImages.logoHeader
 
 const navItems = [
   { to: '/', label: 'Accueil' },

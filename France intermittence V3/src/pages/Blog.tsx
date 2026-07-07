@@ -75,14 +75,14 @@ function HandsHeartIcon() {
   )
 }
 
-const ARTICLES_PER_PAGE = 4
+const SIDE_ARTICLES_PER_PAGE = 3
 
 export function Blog() {
   const [articles, setArticles] = useState<BlogArticle[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
-  const [page, setPage] = useState(1)
+  const [sidePage, setSidePage] = useState(1)
 
   useEffect(() => {
     let active = true
@@ -119,17 +119,18 @@ export function Blog() {
     : articles
 
   useEffect(() => {
-    setPage(1)
+    setSidePage(1)
   }, [normalizedQuery])
 
-  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE))
-  const currentPage = Math.min(page, totalPages)
-  const pageArticles = filteredArticles.slice(
-    (currentPage - 1) * ARTICLES_PER_PAGE,
-    currentPage * ARTICLES_PER_PAGE,
+  const featured = filteredArticles.find((article) => article.is_featured) ?? filteredArticles[0]
+  const remainingArticles = filteredArticles.filter((article) => article.id !== featured?.id)
+
+  const totalSidePages = Math.max(1, Math.ceil(remainingArticles.length / SIDE_ARTICLES_PER_PAGE))
+  const currentSidePage = Math.min(sidePage, totalSidePages)
+  const sideArticles = remainingArticles.slice(
+    (currentSidePage - 1) * SIDE_ARTICLES_PER_PAGE,
+    currentSidePage * SIDE_ARTICLES_PER_PAGE,
   )
-  const featured = pageArticles[0]
-  const sideArticles = pageArticles.slice(1)
 
   return (
     <div className="blog-page">
@@ -206,54 +207,56 @@ export function Blog() {
               </div>
             </article>
 
-            <div className="blog-side">
-              {sideArticles.map((article) => (
-                <article className="blog-card" key={article.id}>
-                  <div className="blog-card__media">
-                    <img
-                      src={article.featured_image_url ?? articleImages[article.slug] ?? blogCumul}
-                      alt={article.featured_image_alt ?? article.title}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="blog-card__body">
-                    <span className="blog-tag">{article.category}</span>
-                    <h3 className="blog-card__title">{article.title}</h3>
-                    <span className="blog-date">
-                      <CalendarIcon /> {formatDate(article.published_at)}
-                    </span>
-                  </div>
-                  <Link to={`/blog/${article.slug}`} className="blog-card__arrow" aria-label={`Lire ${article.title}`}>
-                    <ArrowIcon />
-                  </Link>
-                </article>
-              ))}
+            <div className="blog-side-column">
+              <div className="blog-side">
+                {sideArticles.map((article) => (
+                  <article className="blog-card" key={article.id}>
+                    <div className="blog-card__media">
+                      <img
+                        src={article.featured_image_url ?? articleImages[article.slug] ?? blogCumul}
+                        alt={article.featured_image_alt ?? article.title}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div className="blog-card__body">
+                      <span className="blog-tag">{article.category}</span>
+                      <h3 className="blog-card__title">{article.title}</h3>
+                      <span className="blog-date">
+                        <CalendarIcon /> {formatDate(article.published_at)}
+                      </span>
+                    </div>
+                    <Link to={`/blog/${article.slug}`} className="blog-card__arrow" aria-label={`Lire ${article.title}`}>
+                      <ArrowIcon />
+                    </Link>
+                  </article>
+                ))}
+              </div>
+
+              {totalSidePages > 1 && (
+                <nav className="blog-pagination" aria-label="Pagination des articles">
+                  <button
+                    type="button"
+                    onClick={() => setSidePage((current) => Math.max(1, current - 1))}
+                    disabled={currentSidePage === 1}
+                  >
+                    <ChevronLeftIcon /> Précédent
+                  </button>
+                  <span className="blog-pagination__status">
+                    {currentSidePage} / {totalSidePages}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setSidePage((current) => Math.min(totalSidePages, current + 1))}
+                    disabled={currentSidePage === totalSidePages}
+                  >
+                    Suivant <ArrowIcon />
+                  </button>
+                </nav>
+              )}
             </div>
           </div>
         </Reveal>
-      )}
-
-      {!loading && !error && totalPages > 1 && (
-        <nav className="blog-pagination" aria-label="Pagination des articles">
-          <button
-            type="button"
-            onClick={() => setPage((current) => Math.max(1, current - 1))}
-            disabled={currentPage === 1}
-          >
-            <ChevronLeftIcon /> Précédent
-          </button>
-          <span className="blog-pagination__status">
-            Page {currentPage} / {totalPages}
-          </span>
-          <button
-            type="button"
-            onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
-            disabled={currentPage === totalPages}
-          >
-            Suivant <ArrowIcon />
-          </button>
-        </nav>
       )}
 
       {!loading && !error && !featured && (

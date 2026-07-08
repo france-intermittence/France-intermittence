@@ -1,10 +1,14 @@
 // Prérendu post-build : visite chaque route réelle du site dans un vrai
 // Chromium headless (Playwright) et fige le HTML obtenu (contenu React monté,
 // données Supabase chargées, <head> muté par Seo.tsx avec title/meta/JSON-LD)
-// dans dist/<route>/index.html. Netlify sert ces fichiers statiques en
-// priorité sur `_redirects` : les crawlers (Googlebot, GPTBot, ClaudeBot…)
-// reçoivent un HTML complet sans exécuter de JavaScript, puis le bundle JS
-// prend le relais pour l'expérience SPA normale des visiteurs humains.
+// dans dist/<route>.html (fichier plat, pas dist/<route>/index.html : Netlify
+// résout /financement → financement.html en 200 direct, alors qu'un dossier
+// financement/index.html aurait forcé une redirection 301 vers /financement/,
+// en désaccord avec le canonical et le sitemap qui n'ont pas de trailing
+// slash). Netlify sert ces fichiers statiques en priorité sur `_redirects` :
+// les crawlers (Googlebot, GPTBot, ClaudeBot…) reçoivent un HTML complet sans
+// exécuter de JavaScript, puis le bundle JS prend le relais pour l'expérience
+// SPA normale des visiteurs humains.
 //
 // Pourquoi un script "maison" plutôt qu'un plugin (react-snap, vite-react-ssg,
 // Astro, vike…) : voir l'étude comparative du 2026-07-05. En résumé, les
@@ -18,6 +22,7 @@ import { spawn } from 'node:child_process'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { chromium } from 'playwright'
+import { fetchPublishedBlogArticles } from './lib/blogArticles.mjs'
 
 const PORT = 4174
 const ORIGIN = `http://localhost:${PORT}`
@@ -25,7 +30,9 @@ const ORIGIN = `http://localhost:${PORT}`
 async function collectRoutes() {
   const metiersSource = await readFile(resolve('src/data/metiers.ts'), 'utf8')
   const metierSlugs = [...metiersSource.matchAll(/slug:\s*'([^']+)'/g)].map((match) => match[1])
-  const articles = JSON.parse(await readFile(resolve('content/blog/articles.json'), 'utf8'))
+  // Source de vérité = Supabase (articles publiés), pas content/blog/articles.json :
+  // voir generate-sitemap.mjs pour le même raisonnement.
+  const articles = await fetchPublishedBlogArticles()
 
   return [
     '/',
@@ -68,7 +75,7 @@ async function prerenderRoute(page, route) {
   const url = `${ORIGIN}${route}`
   await page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 })
   const html = await page.content()
-  const outputPath = route === '/' ? resolve('dist/index.html') : resolve(`dist${route}/index.html`)
+  const outputPath = route === '/' ? resolve('dist/index.html') : resolve(`dist${route}.html`)
   await mkdir(dirname(outputPath), { recursive: true })
   await writeFile(outputPath, html)
 }

@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
+import { fetchPublishedBlogArticles } from './lib/blogArticles.mjs'
 
 // Le domaine est lu depuis siteConfig.ts (source unique, celle utilisée par le
 // canonical/JSON-LD à l'exécution) : le sitemap ne peut donc jamais diverger du
@@ -20,7 +21,11 @@ if (metierSlugs.length === 0) {
   throw new Error('Aucun slug métier trouvé dans src/data/metiers.ts.')
 }
 
-const articles = JSON.parse(await readFile(resolve('content/blog/articles.json'), 'utf8'))
+// Les articles viennent de Supabase (status='published'), pas du JSON statique
+// content/blog/articles.json : ce fichier n'est que la source de rédaction
+// utilisée par publish-blog-articles.mjs, alors que les articles créés depuis
+// /admin sont écrits directement en base et doivent apparaître ici aussi.
+const articles = await fetchPublishedBlogArticles()
 
 /** @type {Array<{ path: string; priority: string; changefreq: string }>} */
 const entries = [
